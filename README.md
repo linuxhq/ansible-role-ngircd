@@ -19,8 +19,6 @@ Available variables are listed below, along with default values:
     ngircd_info: 'Server Info Text'
     ngircd_listen:
       - 127.0.0.1
-    ngircd_motdfile: /etc/ngircd.motd
-    ngircd_motdphrase: 'Hello world!'
     ngircd_name: "{{ inventory_hostname }}"
     ngircd_network: localnet
     ngircd_servergid: ngircd
@@ -49,6 +47,8 @@ Additional generic configruation variables not defined by default:
     ngircd_maxlistsize: 100
     ngircd_maxnicklength: 9
     ngircd_moreprivacy: False
+    ngircd_motdfile: /etc/ngircd.motd
+    ngircd_motdphrase: 'Hello world!'
     ngircd_noticebeforeregistration: False
     ngircd_opercanusemode: False
     ngircd_opercanpautoop: True
