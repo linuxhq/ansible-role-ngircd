@@ -88,7 +88,11 @@
 
 	# Ports on which the server should listen. There may be more than
 	# one port, separated with ",". (Default: 6667)
-	Ports = {{ ngircd_ports|join(', ') if ngircd_ports is defined else '6667' }}
+{% if ngircd_ports is defined %}
+	Ports = {{ ngircd_ports|join(', ') }}
+{% else %}
+	;Ports = 6667, 6668, 6669
+{% endif %}
 
 	# Group ID under which the ngIRCd should run; you can use the name
 	# of the group or the numerical ID. ATTENTION: For this to work the
