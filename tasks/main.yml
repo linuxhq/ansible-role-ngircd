@@ -8,14 +8,25 @@
     update_cache: yes
   register: ngircd_yum
 
-- name: Apply ngircd configuration
+- block:
+  - name: Applying ngircd configuration
+    template:
+      src: ngircd.conf.j2
+      dest: /etc/ngircd.conf
+      owner: root
+      group: ngircd
+      mode: 0660
+    notify: restart ngircd
+
+  - name: Create message of the day
+    template:
+      src: ngircd.motd.j2
+      dest: /etc/ngircd.conf
+      owner: root
+      group: ngircd
+      mode: 0600
+    notify: restart ngircd
+    when: ngircd_motd is defined
   tags: ngircd
-  template:
-    src: ngircd.conf.j2
-    dest: /etc/ngircd.conf
-    owner: root
-    group: ngircd
-    mode: 0660
-  notify: restart ngircd
   when: ngircd_yum|success
 ...
