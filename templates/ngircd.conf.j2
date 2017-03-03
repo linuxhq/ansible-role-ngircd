@@ -208,8 +208,8 @@
 {% endif %}
 
 	# Try to connect to other IRC servers using IPv4 and IPv6, if possible.
-	ConnectIPv6 = {{ 'yes' if ngircd_connectipv6 is defined and ngircd_connectipv6 else 'no' }}
-	ConnectIPv4 = {{ 'yes' if ngircd_connectipv4 is defined and ngircd_connectipv4 else 'no' }}
+	ConnectIPv6 = {{ 'no' if ngircd_connectipv6 is defined and not ngircd_connectipv6 else 'yes' }}
+	ConnectIPv4 = {{ 'no' if ngircd_connectipv4 is defined and not ngircd_connectipv4 else 'yes' }}
 
 	# Default user mode(s) to set on new local clients. Please note that
 	# only modes can be set that the client could set using regular MODE
