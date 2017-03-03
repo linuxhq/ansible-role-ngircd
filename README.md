@@ -51,7 +51,7 @@ Additional generic configruation variables not defined by default:
     ngircd_moreprivacy: False
     ngircd_noticebeforeregistration: False
     ngircd_opercanusemode: False
-    ngircd_opercanpautoope: True
+    ngircd_opercanpautoop: True
     ngircd_operservermode: False
     ngircd_pam: True
     ngircd_pamisoptional: False
