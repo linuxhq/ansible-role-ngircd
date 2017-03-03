@@ -21,7 +21,7 @@
   - name: Create message of the day
     template:
       src: ngircd.motd.j2
-      dest: /etc/ngircd.conf
+      dest: /etc/ngircd.motd
       owner: root
       group: ngircd
       mode: 0600
