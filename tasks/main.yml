@@ -24,7 +24,7 @@
       dest: /etc/ngircd.motd
       owner: root
       group: ngircd
-      mode: 0600
+      mode: 0660
     notify: restart ngircd
     when: ngircd_motd is defined
   tags: ngircd
