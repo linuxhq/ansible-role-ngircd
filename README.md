@@ -16,10 +16,7 @@ Available variables are listed below, along with default values:
     ngircd_admininfo1: root
     ngircd_admininfo2: localhost
     ngircd_helpfile: /usr/share/doc/ngircd/Commands.txt
-    ngircd_info:
-      - Server
-      - Info
-      - Text
+    ngircd_info: 'Server Info Text'
     ngircd_listen:
       - 127.0.0.1
     ngircd_motdfile: /etc/ngircd.motd
