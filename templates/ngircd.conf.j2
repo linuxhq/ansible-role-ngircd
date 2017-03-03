@@ -49,10 +49,18 @@
 
 	# Text file with the "message of the day" (MOTD). This message will
 	# be shown to all users connecting to the server:
+{% if ngircd_motdfile is defined %}
 	MotdFile = {{ ngircd_motdfile }}
+{% else %}
+	;MotdFile = /etc/ngircd.motd
+{% endif %}
 
 	# A simple Phrase (<256 chars) if you don't want to use a motd file.
+{% if ngircd_motdphrase is defined %}
 	MotdPhrase = "{{ ngircd_motdphrase }}"
+{% else %}
+	;MotdPhrase = "Hello world!"
+{% endif %}
 
 	# The name of the IRC network to which this server belongs. This name
 	# is optional, should only contain ASCII characters, and can't contain
