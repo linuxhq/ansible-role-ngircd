@@ -15,7 +15,7 @@
     dest: /etc/ngircd.conf
     owner: root
     group: ngircd
-    mode: 660
+    mode: 0660
   notify: restart ngircd
   when: ngircd_yum|success
 ...
