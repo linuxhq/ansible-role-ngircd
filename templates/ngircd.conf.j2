@@ -62,7 +62,7 @@
 
 	# Global password for all users needed to connect to the server.
 	# (Default: not set)
-{{ if ngircd_password is defined %}
+{% if ngircd_password is defined %}
   Password = {{ ngircd_password }}
 {% else %}
 	;Password = abc
