@@ -343,7 +343,7 @@
 {% endif %}
 
 {% if ngircd_operators is defined %}
-{%   foreach o in ngircd_operators %}
+{%   for o in ngircd_operators %}
 [Operator]
 {%     if o['name'] is defined %}
   Name = {{ o['name'] }}
