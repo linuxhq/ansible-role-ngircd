@@ -57,7 +57,7 @@
 
 	# A simple Phrase (<256 chars) if you don't want to use a motd file.
 {% if ngircd_motdphrase is defined %}
-	MotdPhrase = "{{ ngircd_motdphrase }}"
+	MotdPhrase = {{ ngircd_motdphrase }}
 {% else %}
 	;MotdPhrase = "Hello world!"
 {% endif %}
