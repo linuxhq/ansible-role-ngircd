@@ -63,7 +63,7 @@
 	# Global password for all users needed to connect to the server.
 	# (Default: not set)
 {% if ngircd_password is defined %}
-  Password = {{ ngircd_password }}
+	Password = {{ ngircd_password }}
 {% else %}
 	;Password = abc
 {% endif %}
@@ -73,14 +73,14 @@
 	# user ID, e.g. the directory the pidfile resides in must be
 	# writable by the ngIRCd user and exist in the chroot directory.
 {% if ngircd_pidfile is defined %}
-  PidFile = {{ ngircd_pidfile }}
+	PidFile = {{ ngircd_pidfile }}
 {% else %}
 	;PidFile = /var/run/ngircd/ngircd.pid
 {% endif %}
 
 	# Ports on which the server should listen. There may be more than
 	# one port, separated with ",". (Default: 6667)
-  Ports = {{ ngircd_ports|join(', ') if ngircd_ports is defined else '6667' }}
+	Ports = {{ ngircd_ports|join(', ') if ngircd_ports is defined else '6667' }}
 
 	# Group ID under which the ngIRCd should run; you can use the name
 	# of the group or the numerical ID. ATTENTION: For this to work the
@@ -100,42 +100,42 @@
 
 	# The server tries every <ConnectRetry> seconds to establish a link
 	# to not yet (or no longer) connected servers.
-  ConnectRetry = {{ ngircd_connectretry if ngircd_connectretry is defined else '60' }}
+	ConnectRetry = {{ ngircd_connectretry if ngircd_connectretry is defined else '60' }}
 
 	# Number of seconds after which the whole daemon should shutdown when
 	# no connections are left active after handling at least one client
 	# (0: never, which is the default).
 	# This can be useful for testing or when ngIRCd is started using
 	# "socket activation" with systemd(8), for example.
-  IdleTimeout = {{ ngircd_idletimeout if ngircd_idletimeout is defined else '0' }}
+	IdleTimeout = {{ ngircd_idletimeout if ngircd_idletimeout is defined else '0' }}
 
 	# Maximum number of simultaneous in- and outbound connections the
 	# server is allowed to accept (0: unlimited):
-  MaxConnections = {{ ngircd_maxconnections if ngircd_maxconnections is defined else '0' }}
+	MaxConnections = {{ ngircd_maxconnections if ngircd_maxconnections is defined else '0' }}
 
 	# Maximum number of simultaneous connections from a single IP address
 	# the server will accept (0: unlimited):
-  MaxConnectionsIP = {{ ngircd_maxconnectionsip if ngircd_maxconnectionsip is defined else '5' }}
+	MaxConnectionsIP = {{ ngircd_maxconnectionsip if ngircd_maxconnectionsip is defined else '5' }}
 
 	# Maximum number of channels a user can be member of (0: no limit):
-  MaxJoines = {{ ngircd_maxjoins if ngircd_maxjoins is defined else '10' }}
+	MaxJoines = {{ ngircd_maxjoins if ngircd_maxjoins is defined else '10' }}
 
 	# Maximum length of an user nickname (Default: 9, as in RFC 2812).
 	# Please note that all servers in an IRC network MUST use the same
 	# maximum nickname length!
-  MaxNickLength = {{ ngircd_maxnicklength if ngircd_maxnicklength is defined else '9' }}
+	MaxNickLength = {{ ngircd_maxnicklength if ngircd_maxnicklength is defined else '9' }}
 
 	# Maximum number of channels returned in response to a /list
 	# command (0: unlimited):
-  MaxListSize = {{ ngircd_maxlistsize if ngircd_maxlistsize is defined else '100' }}
+	MaxListSize = {{ ngircd_maxlistsize if ngircd_maxlistsize is defined else '100' }}
 
 	# After <PingTimeout> seconds of inactivity the server will send a
 	# PING to the peer to test whether it is alive or not.
-  PingTimeout = {{ ngircd_pingtimeout if ngircd_pingtimeout is defined else '120' }}
+	PingTimeout = {{ ngircd_pingtimeout if ngircd_pingtimeout is defined else '120' }}
 
 	# If a client fails to answer a PING with a PONG within <PongTimeout>
 	# seconds, it will be disconnected by the server.
-  PongTimeout = {{ ngircd_pongtimeout if ngircd_pongtimeout is defined else '20' }}
+	PongTimeout = {{ ngircd_pongtimeout if ngircd_pongtimeout is defined else '20' }}
 
 [Options]
 	# Optional features and configuration options to further tweak the
@@ -146,11 +146,11 @@
 	# channels on the local server. By default, all supported channel
 	# types are allowed. Set this variable to the empty string to disallow
 	# creation of new channels by local clients at all.
-  AllowedChannelTypes = {{ ngircd_allowedchanneltypes if ngircd_allowedchanneltypes is defined else '#&+' }}
+	AllowedChannelTypes = {{ ngircd_allowedchanneltypes if ngircd_allowedchanneltypes is defined else '#&+' }}
 
 	# Are remote IRC operators allowed to control this server, e.g.
 	# use commands like CONNECT, SQUIT, DIE, ...?
-  AllowRemoteOper = {{ 'yes' if ngircd_allowremoteoper is defined and ngircd_allowremoteoper else 'no' }}
+	AllowRemoteOper = {{ 'yes' if ngircd_allowremoteoper is defined and ngircd_allowremoteoper else 'no' }}
 
 	# A directory to chroot in when everything is initialized. It
 	# doesn't need to be populated if ngIRCd is compiled as a static
@@ -158,7 +158,7 @@
 	# ATTENTION: For this to work the server must have been started
 	# with root privileges!
 {% if ngircd_chrootdir is defined %}
-  ChrootDir = {{ ngircd_chrootdir }}
+	ChrootDir = {{ ngircd_chrootdir }}
 {% else %}
 	;ChrootDir = /var/empty
 {% endif %}
@@ -166,7 +166,7 @@
 	# Set this hostname for every client instead of the real one.
 	# Use %x to add the hashed value of the original hostname.
 {% if ngircd_cloakhost is defined %}
-  CloakHost = {{ ngircd_cloakhost }}
+	CloakHost = {{ ngircd_cloakhost }}
 {% else %} 
 	;CloakHost = cloaked.host
 {% endif %}
@@ -175,7 +175,7 @@
 	# user mode "+x" set, instead of the name of the server.
 	# Use %x to add the hashed value of the original hostname.
 {% if ngircd_cloakhostmodex is defined %}
-  CloakHostModeX = {{ ngircd_cloakhostmodex }}
+	CloakHostModeX = {{ ngircd_cloakhostmodex }}
 {% else %}
 	;CloakHostModeX = cloaked.user
 {% endif %}
@@ -183,7 +183,7 @@
 	# The Salt for cloaked hostname hashing. When undefined a random
 	# hash is generated after each server start.
 {% if ngircd_cloakhostsalt is defined %}
-  CloakHostSalt = {{ ngircd_cloakhostsalt }}
+	CloakHostSalt = {{ ngircd_cloakhostsalt }}
 {% else %}
 	;CloakHostSalt = abcdefghijklmnopqrstuvwxyz
 {% endif %}
@@ -191,23 +191,23 @@
 	# Set every clients' user name to their nickname
 {% if ngircd_cloakusertonick is defined %}
 {%   if ngircd_cloakusertonick %}
-  CloakUserToNick = yes
+	CloakUserToNick = yes
 {%   else %}
-  CloakUserToNick = no
+	CloakUserToNick = no
 {%   endif %}
 {% else %}
 	;CloakUserToNick = yes
 {% endif %}
 
 	# Try to connect to other IRC servers using IPv4 and IPv6, if possible.
-  ConnectIPv6 = {{ 'yes' if ngircd_connectipv6 is defined and ngircd_connectipv6 else 'no' }}
-  ConnectIPv4 = {{ 'yes' if ngircd_connectipv4 is defined and ngircd_connectipv4 else 'no' }}
+	ConnectIPv6 = {{ 'yes' if ngircd_connectipv6 is defined and ngircd_connectipv6 else 'no' }}
+	ConnectIPv4 = {{ 'yes' if ngircd_connectipv4 is defined and ngircd_connectipv4 else 'no' }}
 
 	# Default user mode(s) to set on new local clients. Please note that
 	# only modes can be set that the client could set using regular MODE
 	# commands, you can't set "a" (away) for example! Default: none.
 {% if ngircd_defaultusermodes is defined %}
-  DefaultUserModes = {{ ngircd_defaultusermodes }}
+	DefaultUserModes = {{ ngircd_defaultusermodes }}
 {% else %}
 	;DefaultUserModes = i
 {% endif %}
@@ -223,7 +223,7 @@
 	# Directory containing configuration snippets (*.conf), that should
 	# be read in after parsing this configuration file.
 {% if ngircd_incluedir is defined %}
-  IncludeDir = {{ ngircd_incluedir }}
+	IncludeDir = {{ ngircd_incluedir }}
 {% else %}
 	;IncludeDir = /etc/conf.d
 {% endif %}
@@ -285,7 +285,7 @@
 	# Web-to-IRC gateways. If not set/empty, the WEBIRC command can't
 	# be used. (Default: not set)
 {% if ngircd_webircpassword is defined %}
-  WebircPassword = {{ ngircd_webircpassword }}
+	WebircPassword = {{ ngircd_webircpassword }}
 {% else %}
 	;WebircPassword = xyz
 {% endif %}
@@ -297,7 +297,7 @@
 
 	# SSL Server Key Certificate
 {% if ngircd_certfile is defined %}
-  CertFile = {{ ngircd_certfile }}
+	CertFile = {{ ngircd_certfile }}
 {% else %}
 	;CertFile = /etc/ssl/server-cert.pem
 {% endif %}
@@ -311,33 +311,33 @@
 	# For GnuTLS:
 	;CipherList = SECURE128:-VERS-SSL3.0
 {% if ngircd_cipherlist is defined %}
-  CipherList = {{ ngircd_cipherlist|join(':') }}
+	CipherList = {{ ngircd_cipherlist|join(':') }}
 {% endif %}
 
 	# Diffie-Hellman parameters
 {% if ngircd_dhfile is defined %}
-  DHFile = {{ ngircd_dhfile }}
+	DHFile = {{ ngircd_dhfile }}
 {% else %}
 	;DHFile = /etc/ssl/dhparams.pem
 {% endif %}
 
 	# SSL Server Key
 {% if ngircd_keyfile is defined %}
-  KeyFile = {{ ngircd_keyfile }}
+	KeyFile = {{ ngircd_keyfile }}
 {% else %}
 	;KeyFile = /etc/ssl/server-key.pem
 {% endif %}
 
 	# password to decrypt SSLKeyFile (OpenSSL only)
 {% if ngircd_keyfilepassword is defined %}
-  KeyFilePassword = {{ ngircd_keyfilepassword }}
+	KeyFilePassword = {{ ngircd_keyfilepassword }}
 {% else %}
 	;KeyFilePassword = secret
 {% endif %}
 
 	# Additional Listen Ports that expect SSL/TLS encrypted connections
 {% if ngircd_ssl_ports is defined %}
-  Ports = {{ ngircd_ssl_ports|join(', ') }}
+	Ports = {{ ngircd_ssl_ports|join(', ') }}
 {% else %}
 	;Ports = 6697, 9999
 {% endif %}
@@ -346,13 +346,13 @@
 {%   for o in ngircd_operators %}
 [Operator]
 {%     if o['name'] is defined %}
-  Name = {{ o['name'] }}
+	Name = {{ o['name'] }}
 {%     endif %}
 {%     if o['password'] is defined %}
-  Password = {{ o['password'] }}
+	Password = {{ o['password'] }}
 {%     endif %}
 {%     if o['mask'] is defined %}
-  Mask = {{ o['mask'] }}
+	Mask = {{ o['mask'] }}
 {%     endif %}
 
 {%   endfor %}
@@ -427,22 +427,22 @@
 {%   for c in ngircd_channels %}
 [Channel]
 {%     if c['name'] is defined %}
-  Name = {{ c['name'] }}
+	Name = {{ c['name'] }}
 {%     endif %}
 {%     if c['topic'] is defined %}
-  Topic = {{ c['topic'] }}
+	Topic = {{ c['topic'] }}
 {%     endif %}
 {%     if c['modes'] is defined %}
-  Modes = {{ c['modes'] }}
+	Modes = {{ c['modes'] }}
 {%     endif %}
 {%     if c['key'] is defined %}
-  Key = {{ c['key'] }}
+	Key = {{ c['key'] }}
 {%     endif %}
 {%     if c['keyfile'] is defined %}
-  KeyFile = {{ c['keyfile'] }}
+	KeyFile = {{ c['keyfile'] }}
 {%     endif %}
 {%     if c['maxusers'] is defined %}
-  MaxUesrs = {{ c['maxusers'] }}
+	MaxUesrs = {{ c['maxusers'] }}
 {%     endif %}
 
 {%   endfor %}
