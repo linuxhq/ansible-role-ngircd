@@ -1,0 +1,7 @@
+---
+- name: restart ngircd
+  tags: ngircd
+  service:
+    name: ngircd
+    state: restarted
+...

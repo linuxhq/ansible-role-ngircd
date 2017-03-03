@@ -1,0 +1,21 @@
+---
+- name: Ensure ngircd is installed
+  tags: ngircd
+  yum:
+    enablerepo: epel
+    name: ngircd
+    state: present
+    update_cache: yes
+  register: ngircd_yum
+
+- name: Apply ngircd configuration
+  tags: ngircd
+  template:
+    src: ngircd.conf.j2
+    dest: /etc/ngircd.conf
+    owner: root
+    group: ngircd
+    mode: 660
+  notify: restart ngircd
+  when: ngircd_yum|success
+...
