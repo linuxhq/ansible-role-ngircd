@@ -77,7 +77,7 @@ Additional ssl variables not defined by default:
 Additional channel, operator, and server variables not defined by default:
 
     ngircd_channels:
-      - name: channel
+      - name: #channel
         topic: subject
         modes: nt
         key: secret
@@ -97,10 +97,23 @@ Additional channel, operator, and server variables not defined by default:
     - hosts: servers
       roles:
         - role: linuxhq.ngircd
-          ngircd_operators:
-            - name: tkimball
-              password: operup
-              mask: *!taylor@linuxhq.org
+                ngircd_adminemail: taylor@linuxhq.org
+                ngircd_admininfo1: tkimball
+                ngircd_admininfo2: localhost
+                ngircd_channels:
+                  - name: '#linuxhq'
+                    topic: 'http://www.linuxhq.org'
+                    modes: nt
+                ngircd_cloakhost: 'home.%x'
+                ngircd_info: 'LinuxHQ Client Server'
+                ngircd_listen:
+                  - "{{ ansible_default_ipv4.address }}"
+                ngircd_motdphrase: 'Your source for Linux help'
+                ngircd_network: 'LinuxHQ'
+                ngircd_operators:
+                  - name: tkimball
+                    password: QA@#h$$LysnSwGIppY
+                    mask: '*!*tkimball@*'
 
 ## License
 
