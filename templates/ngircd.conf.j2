@@ -343,12 +343,12 @@
 {% endif %}
 
 {% if ngircd_operators is defined %}
-{%   for o in ngircd_operators %}
-{%     if o['name'] is defined %}
+{%   for operator in ngircd_operators %}
+{%     if operator['name'] is defined %}
 [Operator]
-	Name = {{ o['name'] }}
-	Password = {{ o['password'] if o['password'] is defined else o['name']|to_uuid }}
-	Mask = {{ o['mask'] if o['mask'] is defined else '*' }}
+	Name = {{ operator['name'] }}
+	Password = {{ operator['password'] if operator['password'] is defined else operator['name']|to_uuid }}
+	Mask = {{ operator['mask'] if operator['mask'] is defined else '*' }}
 
 {%     endif %}
 {%   endfor %}
@@ -392,15 +392,15 @@
 {%   endif %}
 {% endif %}
 {% if ngircd_channels is defined %}
-{%   for c in ngircd_channels %}
-{%     if c['name'] is defined %} 
+{%   for channel in ngircd_channels %}
+{%     if channel['name'] is defined %} 
 [Channel]
-	Name = {{ c['name'] }}
-	Modes = {{ c['modes'] if c['modes'] is defined else '' }}
-	Topic = {{ c['topic'] if c['topic'] is defined else '' }}
-	Key = {{ c['key'] if c['key'] is defined else '' }}
-	KeyFile = {{ c['keyfile'] if c['keyfile'] is defined else '' }}
-	MaxUsers = {{ c['maxusers'] if c['maxusers'] is defined else '65535' }}
+	Name = {{ channel['name'] }}
+	Modes = {{ channel['modes'] if channel['modes'] is defined else '' }}
+	Topic = {{ channel['topic'] if channel['topic'] is defined else '' }}
+	Key = {{ channel['key'] if channel['key'] is defined else '' }}
+	KeyFile = {{ channel['keyfile'] if channel['keyfile'] is defined else '' }}
+	MaxUsers = {{ channel['maxusers'] if channel['maxusers'] is defined else '65535' }}
 
 {%     endif %}
 {%   endfor %}
