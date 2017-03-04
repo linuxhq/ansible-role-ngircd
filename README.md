@@ -83,10 +83,21 @@ Additional channel, operator, and server variables not defined by default:
         key: secret
         keyfile: /etc/key.file
         maxusers: 25
+
     ngircd_operators:
       - name: nick
         password: pass
         mask: *!*user@host.com
+
+    ngircd_server:
+      hub:
+        name: hub.inventory.hostname.com
+        mypassword: QKYt88uqiICVF3KPTMgL9PQm
+      leafs:
+        - name: leaf1.inventory.hostname.com
+          mypassword: mFyu7YRJAhcStWBmZINDiu4c
+        - name: leaf2.inventory.hostname.com
+          mypassword: yw8OOBO6IVkFi2XlKCFJRamd
 
 ## Dependencies
 
