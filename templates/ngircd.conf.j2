@@ -25,27 +25,27 @@
 
 	# Server name in the IRC network, must contain at least one dot
 	# (".") and be unique in the IRC network. Required!
-	Name = {{ ngircd_name }}
+	Name = {{ ngircd_name if ngircd_name is defined else inventory_hostname }}
 
 	# Information about the server and the administrator, used by the
 	# ADMIN command. Not required by server but by RFC!
-	AdminInfo1 = {{ ngircd_admininfo1 }}
-	AdminInfo2 = {{ ngircd_admininfo2 }}
-	AdminEMail = {{ ngircd_adminemail }}
+	AdminInfo1 = {{ ngircd_admininfo1 if ngircd_admininfo1 is defined else 'ngircd' }}
+	AdminInfo2 = {{ ngircd_admininfo2 if ngircd_admininfo2 is defined else 'localhost' }}
+	AdminEMail = {{ ngircd_adminemail if ngircd_adminemail is defined else 'ngircd@localhost' }}
 
 	# Text file which contains the ngIRCd help text. This file is required
 	# to display help texts when using the "HELP <cmd>" command.
-	HelpFile = {{ ngircd_helpfile }}
+	HelpFile = {{ ngircd_helpfile if ngircd_helpfile is defined else '/usr/share/doc/ngircd/Commands.txt' }}
 
 	# Info text of the server. This will be shown by WHOIS and
 	# LINKS requests for example.
-	Info = {{ ngircd_info }}
+	Info = {{ ngircd_info if ngircd_info is defined else 'Server Info Text' }}
 
 	# Comma separated list of IP addresses on which the server should
 	# listen. Default values are:
 	# "0.0.0.0" or (if compiled with IPv6 support) "::,0.0.0.0"
 	# so the server listens on all IP addresses of the system by default.
-	Listen = {{ ngircd_listen|join(',') }}
+	Listen = {{ ngircd_listen|join(',') if ngircd_listen is defined else '127.0.0.1' }}
 
 	# Text file with the "message of the day" (MOTD). This message will
 	# be shown to all users connecting to the server:
@@ -56,17 +56,13 @@
 {% endif %}
 
 	# A simple Phrase (<256 chars) if you don't want to use a motd file.
-{% if ngircd_motdphrase is defined %}
-	MotdPhrase = {{ ngircd_motdphrase }}
-{% else %}
-	;MotdPhrase = "Hello world!"
-{% endif %}
+	MotdPhrase = {{ ngircd_motdphrase if ngircd_motdphrase is defined else 'Hello World!' }}
 
 	# The name of the IRC network to which this server belongs. This name
 	# is optional, should only contain ASCII characters, and can't contain
 	# spaces. It is only used to inform clients. The default is empty,
 	# so no network name is announced to clients.
-	Network = {{ ngircd_network }}
+	Network = {{ ngircd_network if ngircd_network is defined else 'localnet' }}
 
 	# Global password for all users needed to connect to the server.
 	# (Default: not set)
@@ -97,14 +93,14 @@
 	# Group ID under which the ngIRCd should run; you can use the name
 	# of the group or the numerical ID. ATTENTION: For this to work the
 	# server must have been started with root privileges!
-	ServerGID = {{ ngircd_servergid }}
+	ServerGID = {{ ngircd_servergid if ngircd_servergid is defined else 'ngircd' }}
 
 	# User ID under which the server should run; you can use the name
 	# of the user or the numerical ID. ATTENTION: For this to work the
 	# server must have been started with root privileges! In addition,
 	# the configuration and MOTD files must be readable by this user,
 	# otherwise RESTART and REHASH won't work!
-	ServerUID = {{ ngircd_serveruid }}
+	ServerUID = {{ ngircd_serveruid if ngircd_serveruid is defined else 'ngircd' }}
 
 [Limits]
 	# Define some limits and timeouts for this ngIRCd instance. Default
@@ -202,11 +198,7 @@
 
 	# Set every clients' user name to their nickname
 {% if ngircd_cloakusertonick is defined %}
-{%   if ngircd_cloakusertonick %}
-	CloakUserToNick = yes
-{%   else %}
-	CloakUserToNick = no
-{%   endif %}
+	CloakUserToNick = {{ 'yes' if ngircd_cloakusertonick else 'no' }}
 {% else %}
 	;CloakUserToNick = yes
 {% endif %}
@@ -218,11 +210,7 @@
 	# Default user mode(s) to set on new local clients. Please note that
 	# only modes can be set that the client could set using regular MODE
 	# commands, you can't set "a" (away) for example! Default: none.
-{% if ngircd_defaultusermodes is defined %}
-	DefaultUserModes = {{ ngircd_defaultusermodes }}
-{% else %}
-	;DefaultUserModes = i
-{% endif %}
+	DefaultUserModes = {{ ngircd_defaultusermodes if ngircd_defaultusermodes is defined else 'i' }}
 
 	# Do DNS lookups when a client connects to the server.
 	DNS = {{ 'yes' if ngircd_dns is defined and ngircd_dns else 'no' }}
