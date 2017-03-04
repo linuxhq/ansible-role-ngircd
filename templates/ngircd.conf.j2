@@ -365,8 +365,8 @@
 	MyPassword = {{ ngircd_server['hub']['mypassword'] }}
 	PeerPassword = {{ leaf['mypassword'] }}
 	Group = {{ leaf['group'] if leaf['group'] is defined else '' }}
-	Passive = {{ leaf['passive'] if leaf['passive'] is defined else 'no' }}
-	SSLConnect = {{ leaf['sslconnect'] if leaf['sslconnect'] is defined else 'no' }}
+	Passive = {{ 'yes' if leaf['passive'] is defined and leaf['passive'] else 'no' }}
+	SSLConnect = {{ 'yes' if leaf['sslconnect'] is defined and  leaf['sslconnect'] else 'no' }}
 	ServiceMask = {{ leaf['servicemask']|join(',') if leaf['servicemask'] is defined else '*Serv,Global' }}
 
 {%       endif %}
@@ -383,8 +383,8 @@
 	MyPassword = {{ leaf['mypassword'] }}
 	PeerPassword = {{ ngircd_server['hub']['mypassword'] }}
 	Group = {{ ngircd_server['hub']['group'] if ngircd_server['hub']['group'] is defined else '' }}
-	Passive = {{ ngircd_server['hub']['passive'] if ngircd_server['hub']['passive'] is defined else 'no' }}
-	SSLConnect = {{ ngircd_server['hub']['sslconnect'] if ngircd_server['hub']['sslconnect'] is defined else 'no' }}
+	Passive = {{ 'yes' if ngircd_server['hub']['passive'] is defined and ngircd_server['hub']['passive'] else 'no' }}
+	SSLConnect = {{ 'yes' if ngircd_server['hub']['sslconnect'] is defined and ngircd_server['hub']['sslconnect'] else 'no' }}
 	ServiceMask = {{ ngircd_server['hub']['servicemask']|join(',') if ngircd_server['hub']['servicemask'] is defined else '*Serv,Global' }}
 
 {%         endif %}
