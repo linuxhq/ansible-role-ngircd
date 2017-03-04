@@ -369,93 +369,51 @@
 
 {%   endfor %}
 {% endif %}
+{% if ngircd_servers is defined %}
+{%   if ngircd_servers['hub']['name'] is defined %}
+{%     if inventory_hostname == ngircd_servers['hub']['name'] %}
+{%       if ngircd_servers['leafs'] is defined %}
+{%         for s in ngircd_servers['leafs'] %}
+{%           if s['name'] is defined and s['mypassword'] is defined %}
 [Server]
-	# Other servers are configured in [Server] sections. If you
-	# configure a port for the connection, then this ngircd tries to
-	# connect to to the other server on the given port; if not it waits
-	# for the other server to connect.
-	# There may be more than one server block, one for each server.
-	#
-	# Server Groups:
-	# The ngIRCd allows "server groups": You can assign an "ID" to every
-	# server with which you want this ngIRCd to link. If a server of a
-	# group won't answer, the ngIRCd tries to connect to the next server
-	# in the given group. But the ngircd never tries to connect to two
-	# servers with the same group ID.
-
-	# IRC name of the remote server, must match the "Name" variable in
-	# the [Global] section of the other server (when using ngIRCd).
-	;Name = irc2.example.net
-
-	# Internet host name or IP address of the peer (only required when
-	# this server should establish the connection).
-	;Host = connect-to-host.example.net
-
-	# IP address to use as _source_ address for the connection. if
-	# unspecified, ngircd will let the operating system pick an address.
-	;Bind = 10.0.0.1
-
-	# Port of the server to which the ngIRCd should connect. If you
-	# assign no port the ngIRCd waits for incoming connections.
-	;Port = 6667
-
-	# Own password for the connection. This password has to be configured
-	# as "PeerPassword" on the other server.
-	;MyPassword = MySecret
-
-	# Foreign password for this connection. This password has to be
-	# configured as "MyPassword" on the other server.
-	;PeerPassword = PeerSecret
-
-	# Group of this server (optional)
-	;Group = 123
-
-	# Set the "Passive" option to "yes" if you don't want this ngIRCd to
-	# connect to the configured peer (same as leaving the "Port" variable
-	# empty). The advantage of this option is that you can actually
-	# configure a port an use the IRC command CONNECT more easily to
-	# manually connect this specific server later.
-	;Passive = no
-
-	# Connect to the remote server using TLS/SSL (Default: false)
-	;SSLConnect = yes
-
-	# Define a (case insensitive) list of masks matching nicknames that
-	# should be treated as IRC services when introduced via this remote
-	# server, separated by commas (",").
-	# REGULAR SERVERS DON'T NEED this parameter, so leave it empty
-	# (which is the default).
-	# When you are connecting IRC services which mask as a IRC server
-	# and which use "virtual users" to communicate with, for example
-	# "NickServ" and "ChanServ", you should set this parameter to
-	# something like "*Serv" or "NickServ,ChanServ,XyzServ".
-	;ServiceMask = *Serv,Global
-
-[Server]
-	# More [Server] sections, if you like ...
-
+  Name = {{ s['name'] }}
+  Host = {{ ngircd_servers['hub']['name'] }}
+  Bind = {{ hostvars[s['name']]['ansible_default_ipv4']['address'] }}
+  Port = {{ s['port'] if s['port'] is defined else '6667' }}
+  MyPassword = {{ s['mypassword'] }}
+  PeerPassword = {{ ngircd_servers['hub']['mypassword'] }}
+{%             if s['group'] is defined %}
+	Group = {{ s['group'] }}
+{%             endif %}
+	Passive = {{ 'yes' if s['passive'] is defined and s['passive'] else 'no' }}
+	SSLConnect = {{ 'yes' if s['sslconnect'] is defined and s['sslconnect'] else 'no' }}
+	ServiceMask = {{ s['servicemask']|join(',') if s['servicemask'] is defined else '*Serv,Global' }}
+{%           endif %}
+{%         endfor %}
+{%       endif %}
+{%     endif %}
+{%   endif %}
+{% endif %}       
 {% if ngircd_channels is defined %}
 {%   for c in ngircd_channels %}
+{%     if c['name'] is defined and c['mode'] is defined %} 
 [Channel]
-{%     if c['name'] is defined %}
 	Name = {{ c['name'] }}
-{%     endif %}
-{%     if c['topic'] is defined %}
+  Modes = {{ c['modes'] }}
+{%       if c['topic'] is defined %}
 	Topic = {{ c['topic'] }}
-{%     endif %}
-{%     if c['modes'] is defined %}
-	Modes = {{ c['modes'] }}
-{%     endif %}
-{%     if c['key'] is defined %}
+{%       endif %}
+{%       if c['key'] is defined %}
 	Key = {{ c['key'] }}
-{%     endif %}
-{%     if c['keyfile'] is defined %}
+{%       endif %}
+{%       if c['keyfile'] is defined %}
 	KeyFile = {{ c['keyfile'] }}
-{%     endif %}
-{%     if c['maxusers'] is defined %}
+{%       endif %}
+{%       if c['maxusers'] is defined %}
 	MaxUesrs = {{ c['maxusers'] }}
-{%     endif %}
+{%       endif %}
 
+{%     endif %}
 {%   endfor %}
 {% endif %}
 # -eof-
