@@ -396,13 +396,11 @@
 {% endif %}       
 {% if ngircd_channels is defined %}
 {%   for c in ngircd_channels %}
-{%     if c['name'] is defined and c['mode'] is defined %} 
+{%     if c['name'] is defined %} 
 [Channel]
 	Name = {{ c['name'] }}
-  Modes = {{ c['modes'] }}
-{%       if c['topic'] is defined %}
-	Topic = {{ c['topic'] }}
-{%       endif %}
+  Modes = {{ c['modes'] if c['modes'] is defined else 'nt' }}
+	Topic = {{ c['topic'] if c['topic'] is defined else 'Undefined topic' }}
 {%       if c['key'] is defined %}
 	Key = {{ c['key'] }}
 {%       endif %}
