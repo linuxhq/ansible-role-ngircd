@@ -366,7 +366,7 @@
 	PeerPassword = {{ leaf['mypassword'] }}
 	Group = {{ leaf['group'] if leaf['group'] is defined else '' }}
 	Passive = {{ 'yes' if leaf['passive'] is defined and leaf['passive'] else 'no' }}
-	SSLConnect = {{ 'yes' if leaf['sslconnect'] is defined and  leaf['sslconnect'] else 'no' }}
+	SSLConnect = {{ 'yes' if leaf['sslconnect'] is defined and leaf['sslconnect'] else 'no' }}
 	ServiceMask = {{ leaf['servicemask']|join(',') if leaf['servicemask'] is defined else '*Serv,Global' }}
 
 {%       endif %}
