@@ -130,7 +130,7 @@
 	MaxConnectionsIP = {{ ngircd_maxconnectionsip if ngircd_maxconnectionsip is defined else '5' }}
 
 	# Maximum number of channels a user can be member of (0: no limit):
-	MaxJoines = {{ ngircd_maxjoins if ngircd_maxjoins is defined else '10' }}
+	MaxJoins = {{ ngircd_maxjoins if ngircd_maxjoins is defined else '10' }}
 
 	# Maximum length of an user nickname (Default: 9, as in RFC 2812).
 	# Please note that all servers in an IRC network MUST use the same
@@ -356,60 +356,67 @@
 
 {% if ngircd_operators is defined %}
 {%   for o in ngircd_operators %}
-[Operator]
 {%     if o['name'] is defined %}
+[Operator]
 	Name = {{ o['name'] }}
-{%     endif %}
-{%     if o['password'] is defined %}
-	Password = {{ o['password'] }}
-{%     endif %}
-{%     if o['mask'] is defined %}
-	Mask = {{ o['mask'] }}
-{%     endif %}
+	Password = {{ o['password'] if o['password'] is defined else o['name']|to_uuid }}
+	Mask = {{ o['mask'] if o['mask'] is defined else '*' }}
 
+{%     endif %}
 {%   endfor %}
 {% endif %}
-{% if ngircd_servers is defined %}
-{%   if ngircd_servers['hub']['name'] is defined %}
-{%     if inventory_hostname == ngircd_servers['hub']['name'] %}
-{%       if ngircd_servers['leafs'] is defined %}
-{%         for s in ngircd_servers['leafs'] %}
-{%           if s['name'] is defined and s['mypassword'] is defined %}
+{% if ngircd_server_hub is defined %}
+{%   if inventory_hostname == ngircd_server_hub[0]['name'] %}
+{%     if ngircd_server_leafs is defined %}
+{%       for leaf in ngircd_server_leafs %}
+{%         if leaf['name'] is defined and leaf['mypassword'] is defined %}
 [Server]
-  Name = {{ s['name'] }}
-  Host = {{ ngircd_servers['hub']['name'] }}
-  Bind = {{ hostvars[s['name']]['ansible_default_ipv4']['address'] }}
-  Port = {{ s['port'] if s['port'] is defined else '6667' }}
-  MyPassword = {{ s['mypassword'] }}
-  PeerPassword = {{ ngircd_servers['hub']['mypassword'] }}
-{%             if s['group'] is defined %}
-	Group = {{ s['group'] }}
-{%             endif %}
-	Passive = {{ 'yes' if s['passive'] is defined and s['passive'] else 'no' }}
-	SSLConnect = {{ 'yes' if s['sslconnect'] is defined and s['sslconnect'] else 'no' }}
-	ServiceMask = {{ s['servicemask']|join(',') if s['servicemask'] is defined else '*Serv,Global' }}
+	Name = {{ leaf['name'] }}
+	Bind = {{ hostvars[leaf['name']]['ansible_default_ipv4']['address'] }}
+	Port = {{ leaf['port'] if leaf['port'] is defined else '6667' }}
+	MyPassword = {{ ngircd_server_hub[0]['mypassword'] }}
+	PeerPassword = {{ leaf['mypassword'] }}
+	Group = {{ leaf['group'] if leaf['group'] is defined else '' }}
+	Passive = {{ leaf['passive'] if leaf['passive'] is defined else 'no' }}
+	SSLConnect = {{ leaf['sslconnect'] if leaf['sslconnect'] is defined else 'no' }}
+	ServiceMask = {{ leaf['servicemask']|join(',') if leaf['servicemask'] is defined else '*Serv,Global' }}
+
+{%         endif %}
+{%       endfor %}
+{%    endif %}
+{%   else %}
+{%     if ngircd_server_leafs is defined %}
+{%       for leaf in ngircd_server_leafs %}
+{%           if leaf['name'] is defined and leaf['mypassword'] is defined %}
+{%             if inventory_hostname == leaf['name'] %}
+[Server]
+	Name = {{ ngircd_server_hub[0]['name'] }}
+	Host = {{ ngircd_server_hub[0]['name'] }}
+	Bind = {{ hostvars[ngircd_server_hub[0]['name']]['ansible_default_ipv4']['address'] }}
+	Port = {{ ngircd_server_hub[0]['port'] if ngircd_server_hub[0]['port'] is defined else '6667' }}
+	MyPassword = {{ leaf['mypassword'] }}
+	PeerPassword = {{ ngircd_server_hub[0]['mypassword'] }}
+	Group = {{ ngircd_server_hub[0]['group'] if ngircd_server_hub[0]['group'] is defined else '' }}
+	Passive = {{ ngircd_server_hub[0]['passive'] if ngircd_server_hub[0]['passive'] is defined else 'no' }}
+	SSLConnect = {{ ngircd_server_hub[0]['sslconnect'] if ngircd_server_hub[0]['sslconnect'] is defined else 'no' }}
+	ServiceMask = {{ ngircd_server_hub[0]['servicemask']|join(',') if ngircd_server_hub[0]['servicemask'] is defined else '*Serv,Global' }}
+
 {%           endif %}
-{%         endfor %}
-{%       endif %}
+{%         endif %}
+{%       endfor %}
 {%     endif %}
 {%   endif %}
-{% endif %}       
+{% endif %}
 {% if ngircd_channels is defined %}
 {%   for c in ngircd_channels %}
 {%     if c['name'] is defined %} 
 [Channel]
 	Name = {{ c['name'] }}
-  Modes = {{ c['modes'] if c['modes'] is defined else 'nt' }}
-	Topic = {{ c['topic'] if c['topic'] is defined else 'Undefined topic' }}
-{%       if c['key'] is defined %}
-	Key = {{ c['key'] }}
-{%       endif %}
-{%       if c['keyfile'] is defined %}
-	KeyFile = {{ c['keyfile'] }}
-{%       endif %}
-{%       if c['maxusers'] is defined %}
-	MaxUesrs = {{ c['maxusers'] }}
-{%       endif %}
+	Modes = {{ c['modes'] if c['modes'] is defined else '' }}
+	Topic = {{ c['topic'] if c['topic'] is defined else '' }}
+	Key = {{ c['key'] if c['key'] is defined else '' }}
+	KeyFile = {{ c['keyfile'] if c['keyfile'] is defined else '' }}
+	MaxUsers = {{ c['maxusers'] if c['maxusers'] is defined else '65535' }}
 
 {%     endif %}
 {%   endfor %}
