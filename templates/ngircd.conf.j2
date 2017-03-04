@@ -347,7 +347,7 @@
 {%     if operator['name'] is defined %}
 [Operator]
 	Name = {{ operator['name'] }}
-	Password = {{ operator['password'] if operator['password'] is defined else operator['name']|to_uuid }}
+	Password = {{ operator['password'] if operator['password'] is defined else operator['name']|random }}
 	Mask = {{ operator['mask'] if operator['mask'] is defined else '*' }}
 
 {%     endif %}
