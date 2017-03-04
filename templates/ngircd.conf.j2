@@ -353,6 +353,7 @@
 {%     endif %}
 {%   endfor %}
 {% endif %}
+
 {% if ngircd_server['hub'] is defined and ngircd_server['leafs'] is defined %}
 {%   if inventory_hostname == ngircd_server['hub']['name'] %}
 {%     for leaf in ngircd_server['leafs'] %}
@@ -391,6 +392,7 @@
 {%     endfor %}
 {%   endif %}
 {% endif %}
+
 {% if ngircd_channels is defined %}
 {%   for channel in ngircd_channels %}
 {%     if channel['name'] is defined %} 
