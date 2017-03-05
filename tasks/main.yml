@@ -27,6 +27,12 @@
       mode: 0660
     notify: restart ngircd
     when: ngircd_motd is defined
+
+  - name: Ensure ngircd is running and enabled on boot
+    service:
+      enabled: yes
+      name: ngircd
+      state: started
   tags: ngircd
   when: ngircd_yum|success
 ...
