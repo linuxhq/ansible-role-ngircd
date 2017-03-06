@@ -101,7 +101,7 @@ Additional operator variable not defined by default:
 
 Additional server variable not defined by default:
 
-    ngircd_server:
+    ngircd_servers:
       hub:
         name: hub.inventory.hostname.com
         bind: "{{ ansible_default_ipv4.address }}" 
