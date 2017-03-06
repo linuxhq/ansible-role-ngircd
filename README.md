@@ -73,30 +73,43 @@ Additional ssl variables not defined by default:
     ngircd_keyfilepassword: secret
     ngircd_ssl_ports: [ '6697', '9999' ]
 
-Additional channel, operator, and server variables not defined by default:
+Additional channel variable not defined by default:
 
     ngircd_channels:
-      - name: #channel
-        topic: subject
+      - name: #chan1
+        topic: subject1
         modes: nt
-        key: secret
-        keyfile: /etc/key.file
+        key: secret1
+        keyfile: /etc/key1.file
         maxusers: 25
+      - name: #chan2
+        topic: subject2
+        modes: npst
+        key: secret2
+        keyfile: /etc/key2.file
+        maxusers: 50
+
+Additional operator variable not defined by default:
 
     ngircd_operators:
-      - name: nick
-        password: pass
-        mask: *!*user@host.com
+      - name: nick1
+        password: pass1 (plaintext)
+        mask: *!*user1@host1.com
+      - name: nick2
+        password: pass2 (plaintext)
+        mask: *!*user2@host2.com
+
+Additional server variable not defined by default:
 
     ngircd_server:
       hub:
         name: hub.inventory.hostname.com
-        mypassword: QKYt88uqiICVF3KPTMgL9PQm
+        mypassword: QKYt88uqiICVF3KPTMgL9PQm (plaintext)
       leafs:
         - name: leaf1.inventory.hostname.com
-          mypassword: mFyu7YRJAhcStWBmZINDiu4c
+          mypassword: mFyu7YRJAhcStWBmZINDiu4c (plaintext)
         - name: leaf2.inventory.hostname.com
-          mypassword: yw8OOBO6IVkFi2XlKCFJRamd
+          mypassword: yw8OOBO6IVkFi2XlKCFJRamd (plaintext)
 
 ## Dependencies
 
@@ -125,7 +138,7 @@ Additional channel, operator, and server variables not defined by default:
             - "{{ ansible_default_ipv4.address }}"
           ngircd_operators:
             - name: tkimball
-              password: QA@#h$$LysnSwGIppY (plaintext)
+              password: QA@#h$$LysnSwGIppY
               mask: '*!*tkimball@*'
           ngircd_ports:
             - 6667
