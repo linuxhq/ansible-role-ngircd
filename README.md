@@ -12,57 +12,56 @@ None
 
 Available variables are listed below, along with default values:
 
-    ngircd_adminemail: root@localhost
-    ngircd_admininfo1: root
+    ngircd_adminemail: ngircd@localhost
+    ngircd_admininfo1: ngircd
     ngircd_admininfo2: localhost
-    ngircd_helpfile: /usr/share/doc/ngircd/Commands.txt
-    ngircd_info: 'Server Info Text'
-    ngircd_listen:
-      - 127.0.0.1
-    ngircd_name: "{{ inventory_hostname }}"
-    ngircd_network: localnet
-    ngircd_servergid: ngircd
-    ngircd_serveruid: ngircd
-
-Additional generic configruation variables not defined by default:
-
     ngircd_allowedchanneltypes: '#&+'
     ngircd_allowremoteoper: False
-    ngircd_chrootdir: /var/empty
-    ngircd_cloakhost: cloaked.host
-    ngircd_cloakhostmodex: cloaked.user
-    ngircd_cloakhostsalt: abcdefghijklmnopqrstuvwxyz
-    ngircd_cloakusertonick: True
     ngircd_connectipv4: True
     ngircd_connectipv6: True
     ngircd_connectretry: 60
     ngircd_defaultusermodes: i
     ngircd_dns: True
+    ngircd_helpfile: /usr/share/doc/ngircd/Commands.txt
     ngircd_ident: True
     ngircd_idletimeout: 0
-    ngircd_incluedir: /etc/ngircd.d
+    ngircd_info: 'Server Info Text'
+    ngircd_listen: [ '127.0.0.1' ]
     ngircd_maxconnections: 0
     ngircd_maxconnectionsip: 5
     ngircd_maxjoins: 10
     ngircd_maxlistsize: 100
     ngircd_maxnicklength: 9
     ngircd_moreprivacy: False
-    ngircd_motdfile: /etc/ngircd.motd
-    ngircd_motdphrase: 'Hello world!'
+    ngircd_name: "{{ inventory_hostname }}"
+    ngircd_network: localnet
     ngircd_noticebeforeregistration: False
     ngircd_opercanusemode: False
     ngircd_opercanpautoop: True
     ngircd_operservermode: False
     ngircd_pam: True
     ngircd_pamisoptional: False
-    ngircd_password: xyz
-    ngircd_pidfile: /var/run/ngircd/ngircd.pid
     ngircd_pingtimeout: 120
     ngircd_pongtimeout: 20
-    ngircd_ports: [ '6667' ] 
     ngircd_requireauthping: False
     ngircd_scrubctcp: False
+    ngircd_servergid: ngircd
+    ngircd_serveruid: ngircd
     ngircd_syslogfacility: local5
+
+Additional configruation variables not defined by default:
+
+    ngircd_chrootdir: /var/empty
+    ngircd_cloakhost: cloaked.host
+    ngircd_cloakhostmodex: cloaked.user
+    ngircd_cloakhostsalt: abcdefghijklmnopqrstuvwxyz
+    ngircd_cloakusertonick: True
+    ngircd_incluedir: /etc/ngircd.d
+    ngircd_motdfile: /etc/ngircd.motd
+    ngircd_motdphrase: 'Hello world!'
+    ngircd_password: xyz
+    ngircd_pidfile: /var/run/ngircd/ngircd.pid
+    ngircd_ports: [ '6667' ]
     ngircd_webircpassword: xyz
 
 Additional ssl variables not defined by default:
@@ -103,27 +102,28 @@ Additional channel, operator, and server variables not defined by default:
 
  * https://galaxy.ansible.com/linuxhq/epel/
 
-## Example Playbook
+## Example Playbooks
+
+### Configure a standalone IRC server (binded to localhost)
 
     - hosts: servers
       roles:
         - role: linuxhq.ngircd
-          ngircd_adminemail: taylor@linuxhq.org
-          ngircd_admininfo1: tkimball
-          ngircd_admininfo2: localhost
+
+### Configure a standalone IRC server with channels and operators (binded to ansible_default_ipv4)
+
+    - hosts: servers
+      roles:
+        - role: linuxhq.ngircd
           ngircd_channels:
             - name: '#linuxhq'
               topic: 'http://www.linuxhq.org'
               modes: nt
-          ngircd_cloakhost: 'home.%x'
-          ngircd_info: 'LinuxHQ Client Server'
           ngircd_listen:
             - "{{ ansible_default_ipv4.address }}"
-          ngircd_motdphrase: 'Your source for Linux help'
-          ngircd_network: 'LinuxHQ'
           ngircd_operators:
             - name: tkimball
-              password: QA@#h$$LysnSwGIppY
+              password: QA@#h$$LysnSwGIppY (plaintext)
               mask: '*!*tkimball@*'
 
 ## License
