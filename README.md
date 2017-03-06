@@ -104,12 +104,30 @@ Additional server variable not defined by default:
     ngircd_server:
       hub:
         name: hub.inventory.hostname.com
+        bind: "{{ ansible_default_ipv4.address }}" 
+        group: 1
+        passive: no
+        port: 6667
         mypassword: QKYt88uqiICVF3KPTMgL9PQm (plaintext)
+        sslconnect: no
+        servicemask: '*Serv,Global'
       leafs:
         - name: leaf1.inventory.hostname.com
+          bind: "{{ ansible_default_ipv4.address }}"
+          group: 1
+          passive: no
+          port: 6667
           mypassword: mFyu7YRJAhcStWBmZINDiu4c (plaintext)
+          sslconnect: no
+          servicemask: '*Serv,Global'
         - name: leaf2.inventory.hostname.com
+          bind: "{{ ansible_default_ipv4.address }}"
+          group: 1
+          passive: no
+          port: 6667
           mypassword: yw8OOBO6IVkFi2XlKCFJRamd (plaintext)
+          sslconnect: no
+          servicemask: '*Serv,Global'
 
 ## Dependencies
 
