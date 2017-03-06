@@ -104,13 +104,15 @@ Additional channel, operator, and server variables not defined by default:
 
 ## Example Playbooks
 
-### Configure a standalone IRC server (binded to localhost)
+#### Configure a standalone IRC server (binded to localhost)
 
     - hosts: servers
       roles:
         - role: linuxhq.ngircd
+          ngircd_ports:
+            - 6667
 
-### Configure a standalone IRC server with channels and operators (binded to ansible_default_ipv4)
+#### Configure a standalone IRC server with channels and operators (binded to ansible_default_ipv4)
 
     - hosts: servers
       roles:
@@ -125,6 +127,8 @@ Additional channel, operator, and server variables not defined by default:
             - name: tkimball
               password: QA@#h$$LysnSwGIppY (plaintext)
               mask: '*!*tkimball@*'
+          ngircd_ports:
+            - 6667
 
 ## License
 
