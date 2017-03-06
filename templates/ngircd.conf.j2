@@ -360,7 +360,7 @@
 {%       if leaf['name'] is defined and leaf['mypassword'] is defined %}
 [Server]
 	Name = {{ leaf['name'] }}
-	Bind = {{ leaf['bind'] if leaf['bind'] is defined else hostvars[leaf['name']]['ansible_default_ipv4']['address'] }}
+	Bind = {{ leaf['bind'] if leaf['bind'] is defined else '' }}
 	Port = {{ leaf['port'] if leaf['port'] is defined else '6667' }}
 	MyPassword = {{ ngircd_server['hub']['mypassword'] }}
 	PeerPassword = {{ leaf['mypassword'] }}
@@ -378,7 +378,7 @@
 [Server]
 	Name = {{ ngircd_server['hub']['name'] }}
 	Host = {{ ngircd_server['hub']['name'] }}
-	Bind = {{ ngircd_server['hub']['bind'] if ngircd_server['hub']['bind'] is defined else hostvars[ngircd_server['hub']['name']]['ansible_default_ipv4']['address'] }}
+	Bind = {{ ngircd_server['hub']['bind'] if ngircd_server['hub']['bind'] is defined else '' }}
 	Port = {{ ngircd_server['hub']['port'] if ngircd_server['hub']['port'] is defined else '6667' }}
 	MyPassword = {{ leaf['mypassword'] }}
 	PeerPassword = {{ ngircd_server['hub']['mypassword'] }}
