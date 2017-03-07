@@ -157,6 +157,48 @@ Additional server variable not defined by default:
           ngircd_ports:
             - 6667
 
+#### Configure a IRC network with channels, operators, and servers (non-ssl only)
+
+    - hosts: servers
+      roles:
+        - role: linuxhq.ngircd
+          ngircd_channels:
+            - name: '#linuxhq'
+              topic: 'http://www.linuxhq.org'
+              modes: nt
+          ngircd_listen:
+            - "{{ ansible_default_ipv4.address }}"
+          ngircd_operators:
+            - name: tkimball
+              password: QA@#h$$LysnSwGIppY
+              mask: '*!*tkimball@*'
+          ngircd_ports:
+            - 6667
+          ngircd_servers_hub:
+            - name: hub.linuxhq.org
+              bind: 10.0.0.10
+              mypassword: D5ewmI6L6hKjDJBiHsg4RWBp
+              passive: False
+              port: 6667
+              sslconnect: False
+          ngircd_servers_leafs:
+            - name: leaf1.linuxhq.org
+              bind: 10.0.0.11
+              mypassword: I6slKBEBkMOhz793KYz79A7j
+              passive: False
+              port: 6667
+              sslconnect: False
+            - name: leaf2.linuxhq.org
+              bind: 10.0.0.12
+              mypassword: 4vPxc9VyQuMBJe98x3ZMNY9B
+              passive: False
+              port: 6667
+              sslconnect: False
+
+#### Configure a IRC network with channels, operators, and servers (ssl only)
+
+    Coming soon!
+
 ## License
 
 BSD
