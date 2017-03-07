@@ -354,43 +354,41 @@
 {%   endfor %}
 {% endif %}
 
-{% if ngircd_servers['hub'] is defined and ngircd_servers['leafs'] is defined %}
-{%   if inventory_hostname == ngircd_servers['hub']['name'] %}
-{%     for leaf in ngircd_servers['leafs'] %}
-{%       if leaf['name'] is defined and leaf['mypassword'] is defined %}
+{% if ngircd_servers_hub is defined and ngircd_servers_leafs is defined %}
+{%   for hub in ngircd_servers_hub %}
+{%     if hub['name'] == inventory_hostname %}
+{%       for leaf in ngircd_servers_leafs %}
 [Server]
 	Name = {{ leaf['name'] }}
 	Bind = {{ leaf['bind'] if leaf['bind'] is defined else '' }}
 	Port = {{ leaf['port'] if leaf['port'] is defined else '6667' }}
-	MyPassword = {{ ngircd_servers['hub']['mypassword'] }}
+	MyPassword = {{ hub['mypassword'] }}
 	PeerPassword = {{ leaf['mypassword'] }}
 	Group = {{ leaf['group'] if leaf['group'] is defined else '' }}
 	Passive = {{ 'yes' if leaf['passive'] is defined and leaf['passive'] else 'no' }}
 	SSLConnect = {{ 'yes' if leaf['sslconnect'] is defined and leaf['sslconnect'] else 'no' }}
 	ServiceMask = {{ leaf['servicemask']|join(',') if leaf['servicemask'] is defined else '*Serv,Global' }}
 
-{%       endif %}
-{%     endfor %}
-{%   else %}
-{%     for leaf in ngircd_servers['leafs'] %}
-{%       if leaf['name'] is defined and leaf['mypassword'] is defined %}
-{%         if inventory_hostname == leaf['name'] %}
+{%       endfor %}
+{%     else %}
+{%       for leaf in ngircd_servers_leafs %}
+{%         if leaf['name'] == inventory_hostname %}
 [Server]
-	Name = {{ ngircd_servers['hub']['name'] }}
-	Host = {{ ngircd_servers['hub']['name'] }}
-	Bind = {{ ngircd_servers['hub']['bind'] if ngircd_servers['hub']['bind'] is defined else '' }}
-	Port = {{ ngircd_servers['hub']['port'] if ngircd_servers['hub']['port'] is defined else '6667' }}
+	Name = {{ hub['name'] }}
+	Host = {{ hub['name'] }}
+	Bind = {{ hub['bind'] if hub['bind'] is defined else '' }}
+	Port = {{ hub['port'] if hub['port'] is defined else '6667' }}
 	MyPassword = {{ leaf['mypassword'] }}
-	PeerPassword = {{ ngircd_servers['hub']['mypassword'] }}
-	Group = {{ ngircd_servers['hub']['group'] if ngircd_servers['hub']['group'] is defined else '' }}
-	Passive = {{ 'yes' if ngircd_servers['hub']['passive'] is defined and ngircd_servers['hub']['passive'] else 'no' }}
-	SSLConnect = {{ 'yes' if ngircd_servers['hub']['sslconnect'] is defined and ngircd_servers['hub']['sslconnect'] else 'no' }}
-	ServiceMask = {{ ngircd_servers['hub']['servicemask']|join(',') if ngircd_servers['hub']['servicemask'] is defined else '*Serv,Global' }}
+	PeerPassword = {{ hub['mypassword'] }}
+	Group = {{ hub['group'] if hub['group'] is defined else '' }}
+	Passive = {{ 'yes' if hub['passive'] is defined and hub['passive'] else 'no' }}
+	SSLConnect = {{ 'yes' if hub['sslconnect'] is defined and hub['sslconnect'] else 'no' }}
+	ServiceMask = {{ hub['servicemask']|join(',') if hub['servicemask'] is defined else '*Serv,Global' }}
 
 {%         endif %}
-{%       endif %}
-{%     endfor %}
-{%   endif %}
+{%       endfor %}
+{%     endif %}
+{%   endfor %}
 {% endif %}
 
 {% if ngircd_channels is defined %}

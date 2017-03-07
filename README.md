@@ -101,33 +101,29 @@ Additional operator variable not defined by default:
 
 Additional server variable not defined by default:
 
-    ngircd_servers:
-      hub:
-        name: hub.inventory.hostname.com
+    ngircd_servers_hub:
+      - name: hub.inventory.hostname.com
         bind: 75.100.25.100
-        group: 1
         passive: no
         port: 6667
         mypassword: QKYt88uqiICVF3KPTMgL9PQm (plaintext)
         sslconnect: no
         servicemask: '*Serv,Global'
-      leafs:
-        - name: leaf1.inventory.hostname.com
-          bind: 75.100.25.101
-          group: 1
-          passive: no
-          port: 6667
-          mypassword: mFyu7YRJAhcStWBmZINDiu4c (plaintext)
-          sslconnect: no
-          servicemask: '*Serv,Global'
-        - name: leaf2.inventory.hostname.com
-          bind: 75.100.25.102
-          group: 1
-          passive: no
-          port: 6667
-          mypassword: yw8OOBO6IVkFi2XlKCFJRamd (plaintext)
-          sslconnect: no
-          servicemask: '*Serv,Global'
+    ngircd_servers_leafs:
+      - name: leaf1.inventory.hostname.com
+        bind: 75.100.25.101
+        passive: no
+        port: 6667
+        mypassword: mFyu7YRJAhcStWBmZINDiu4c (plaintext)
+        sslconnect: no
+        servicemask: '*Serv,Global'
+      - name: leaf2.inventory.hostname.com
+        bind: 75.100.25.102
+        passive: no
+        port: 6667
+        mypassword: yw8OOBO6IVkFi2XlKCFJRamd (plaintext)
+        sslconnect: no
+        servicemask: '*Serv,Global'
 
 ## Dependencies
 
