@@ -104,25 +104,25 @@ Additional server variable not defined by default:
     ngircd_servers_hub:
       - name: hub.inventory.hostname.com
         bind: 10.0.0.10
-        passive: no
+        passive: False
         port: 6667
         mypassword: QKYt88uqiICVF3KPTMgL9PQm (plaintext)
-        sslconnect: no
+        sslconnect: False
         servicemask: '*Serv,Global'
     ngircd_servers_leafs:
       - name: leaf1.inventory.hostname.com
         bind: 10.0.0.11
-        passive: no
+        passive: False
         port: 6667
         mypassword: mFyu7YRJAhcStWBmZINDiu4c (plaintext)
-        sslconnect: no
+        sslconnect: False
         servicemask: '*Serv,Global'
       - name: leaf2.inventory.hostname.com
         bind: 10.0.0.12
-        passive: no
+        passive: False
         port: 6667
         mypassword: yw8OOBO6IVkFi2XlKCFJRamd (plaintext)
-        sslconnect: no
+        sslconnect: False
         servicemask: '*Serv,Global'
 
 ## Dependencies
