@@ -131,7 +131,7 @@ Additional server variable not defined by default:
 
 ## Example Playbooks
 
-#### Configure a standalone IRC server (binded to localhost)
+#### Configure a standalone IRC server (all ipv4 interfaces)
 
     - hosts: servers
       roles:
@@ -139,7 +139,7 @@ Additional server variable not defined by default:
           ngircd_ports:
             - 6667
 
-#### Configure a standalone IRC server with channels and operators (binded to ansible_default_ipv4)
+#### Configure a standalone IRC server with channels and operators (all ipv4/ipv6 interfaces)
 
     - hosts: servers
       roles:
@@ -149,11 +149,12 @@ Additional server variable not defined by default:
               topic: 'http://www.linuxhq.org'
               modes: nt
           ngircd_listen:
-            - "{{ ansible_default_ipv4.address }}"
+            - '::'
+            - '0.0.0.0'
           ngircd_operators:
             - name: tkimball
               password: QA@#h$$LysnSwGIppY
-              mask: '*!*tkimball@*'
+              mask: '*!*tkimball@*.*'
           ngircd_ports:
             - 6667
 
@@ -166,8 +167,6 @@ Additional server variable not defined by default:
             - name: '#linuxhq'
               topic: 'http://www.linuxhq.org'
               modes: nt
-          ngircd_listen:
-            - "{{ ansible_default_ipv4.address }}"
           ngircd_operators:
             - name: tkimball
               password: QA@#h$$LysnSwGIppY
@@ -176,20 +175,17 @@ Additional server variable not defined by default:
             - 6667
           ngircd_servers_hub:
             - name: hub.linuxhq.org
-              bind: 10.0.0.10
               mypassword: D5ewmI6L6hKjDJBiHsg4RWBp
               passive: False
               port: 6667
               sslconnect: False
           ngircd_servers_leafs:
             - name: leaf1.linuxhq.org
-              bind: 10.0.0.11
               mypassword: I6slKBEBkMOhz793KYz79A7j
               passive: False
               port: 6667
               sslconnect: False
             - name: leaf2.linuxhq.org
-              bind: 10.0.0.12
               mypassword: 4vPxc9VyQuMBJe98x3ZMNY9B
               passive: False
               port: 6667
