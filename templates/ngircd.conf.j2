@@ -359,13 +359,17 @@
 {%     if hub['name'] == inventory_hostname %}
 {%       for leaf in ngircd_servers_leafs %}
 [Server]
-	Name = {{ leaf['name'] }}
-	Bind = {{ leaf['bind'] if leaf['bind'] is defined else '' }}
-	Port = {{ leaf['port'] if leaf['port'] is defined else '6667' }}
+{%         if leaf['bind'] is defined %}
+	Bind = {{ leaf['bind'] }}
+{%         endif %}
+{%         if leaf['group'] is defined %}
+	Group = {{ leaf['group'] }}
+{%         endif %}
 	MyPassword = {{ hub['mypassword'] }}
-	PeerPassword = {{ leaf['mypassword'] }}
-	Group = {{ leaf['group'] if leaf['group'] is defined else '' }}
+	Name = {{ leaf['name'] }}
 	Passive = {{ 'yes' if leaf['passive'] is defined and leaf['passive'] else 'no' }}
+	PeerPassword = {{ leaf['mypassword'] }}
+	Port = {{ leaf['port'] if leaf['port'] is defined else '6667' }}
 	SSLConnect = {{ 'yes' if leaf['sslconnect'] is defined and leaf['sslconnect'] else 'no' }}
 	ServiceMask = {{ leaf['servicemask']|join(',') if leaf['servicemask'] is defined else '*Serv,Global' }}
 
@@ -374,16 +378,20 @@
 {%       for leaf in ngircd_servers_leafs %}
 {%         if leaf['name'] == inventory_hostname %}
 [Server]
-	Name = {{ hub['name'] }}
+{%           if hub['bind'] is defined %}
+	Bind = {{ hub['bind'] }}
+{%           endif %}
+{%           if hub['group'] is defined %}
+	Group = {{ hub['group'] }}
+{%           endif %}
 	Host = {{ hub['name'] }}
-	Bind = {{ hub['bind'] if hub['bind'] is defined else '' }}
-	Port = {{ hub['port'] if hub['port'] is defined else '6667' }}
 	MyPassword = {{ leaf['mypassword'] }}
-	PeerPassword = {{ hub['mypassword'] }}
-	Group = {{ hub['group'] if hub['group'] is defined else '' }}
+	Name = {{ hub['name'] }}
 	Passive = {{ 'yes' if hub['passive'] is defined and hub['passive'] else 'no' }}
-	SSLConnect = {{ 'yes' if hub['sslconnect'] is defined and hub['sslconnect'] else 'no' }}
+	PeerPassword = {{ hub['mypassword'] }}
+	Port = {{ hub['port'] if hub['port'] is defined else '6667' }}
 	ServiceMask = {{ hub['servicemask']|join(',') if hub['servicemask'] is defined else '*Serv,Global' }}
+	SSLConnect = {{ 'yes' if hub['sslconnect'] is defined and hub['sslconnect'] else 'no' }}
 
 {%         endif %}
 {%       endfor %}
