@@ -26,7 +26,7 @@ Available variables are listed below, along with default values:
     ngircd_ident: True
     ngircd_idletimeout: 0
     ngircd_info: 'Server Info Text'
-    ngircd_listen: [ '127.0.0.1' ]
+    ngircd_listen: [ '0.0.0.0' ]
     ngircd_maxconnections: 0
     ngircd_maxconnectionsip: 5
     ngircd_maxjoins: 10
