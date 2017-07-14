@@ -1,416 +1,184 @@
-#
-# This is a sample configuration file for the ngIRCd IRC daemon, which must
-# be customized to the local preferences and needs.
-#
-# Comments are started with "#" or ";".
-#
-# A lot of configuration options in this file start with a ";". You have
-# to remove the ";" in front of each variable to actually set a value!
-# The disabled variables are shown with example values for completeness only
-# and the daemon is using compiled-in default settings.
-#
-# Use "ngircd --configtest" (see manual page ngircd(8)) to validate that the
-# server interprets the configuration file as expected!
-#
-# Please see ngircd.conf(5) for a complete list of configuration options
-# and their descriptions.
-#
+# {{ ansible_managed }}
 
 [Global]
-	# The [Global] section of this file is used to define the main
-	# configuration of the server, like the server name and the ports
-	# on which the server should be listening.
-	# These settings depend on your personal preferences, so you should
-	# make sure that they correspond to your installation and setup!
-
-	# Server name in the IRC network, must contain at least one dot
-	# (".") and be unique in the IRC network. Required!
-	Name = {{ ngircd_name if ngircd_name is defined else inventory_hostname }}
-
-	# Information about the server and the administrator, used by the
-	# ADMIN command. Not required by server but by RFC!
-	AdminInfo1 = {{ ngircd_admininfo1 if ngircd_admininfo1 is defined else 'ngircd' }}
-	AdminInfo2 = {{ ngircd_admininfo2 if ngircd_admininfo2 is defined else 'localhost' }}
-	AdminEMail = {{ ngircd_adminemail if ngircd_adminemail is defined else 'ngircd@localhost' }}
-
-	# Text file which contains the ngIRCd help text. This file is required
-	# to display help texts when using the "HELP <cmd>" command.
-	HelpFile = {{ ngircd_helpfile if ngircd_helpfile is defined else '/usr/share/doc/ngircd/Commands.txt' }}
-
-	# Info text of the server. This will be shown by WHOIS and
-	# LINKS requests for example.
-	Info = {{ ngircd_info if ngircd_info is defined else 'Server Info Text' }}
-
-	# Comma separated list of IP addresses on which the server should
-	# listen. Default values are:
-	# "0.0.0.0" or (if compiled with IPv6 support) "::,0.0.0.0"
-	# so the server listens on all IP addresses of the system by default.
-	Listen = {{ ngircd_listen|join(',') if ngircd_listen is defined else '0.0.0.0' }}
-
-	# Text file with the "message of the day" (MOTD). This message will
-	# be shown to all users connecting to the server:
-{% if ngircd_motdfile is defined %}
-	MotdFile = {{ ngircd_motdfile }}
-{% else %}
-	;MotdFile = /etc/ngircd.motd
+AdminInfo1 = {{ ngircd_global_admininfo1 }}
+AdminInfo2 = {{ ngircd_global_admininfo2 }}
+AdminEMail = {{ ngircd_global_adminemail }}
+HelpFile = {{ ngircd_global_helpfile }}
+Info = {{ ngircd_global_info }}
+Listen = {{ ngircd_global_listen if ngircd_global_listen is string else ngircd_global_listen|join(',') }}
+{% if ngircd_global_motdfile is defined %}
+MotdFile = /etc/ngircd.motd
 {% endif %}
-
-	# A simple Phrase (<256 chars) if you don't want to use a motd file.
-	MotdPhrase = {{ ngircd_motdphrase if ngircd_motdphrase is defined else 'Hello World!' }}
-
-	# The name of the IRC network to which this server belongs. This name
-	# is optional, should only contain ASCII characters, and can't contain
-	# spaces. It is only used to inform clients. The default is empty,
-	# so no network name is announced to clients.
-	Network = {{ ngircd_network if ngircd_network is defined else 'localnet' }}
-
-	# Global password for all users needed to connect to the server.
-	# (Default: not set)
-{% if ngircd_password is defined %}
-	Password = {{ ngircd_password }}
-{% else %}
-	;Password = abc
+{% if ngircd_global_motdphrase is defined %}
+MotdPhrase = {{ ngircd_global_motdphrase }}
 {% endif %}
-
-	# This tells ngIRCd to write its current process ID to a file.
-	# Note that the pidfile is written AFTER chroot and switching the
-	# user ID, e.g. the directory the pidfile resides in must be
-	# writable by the ngIRCd user and exist in the chroot directory.
-{% if ngircd_pidfile is defined %}
-	PidFile = {{ ngircd_pidfile }}
-{% else %}
-	;PidFile = /var/run/ngircd/ngircd.pid
+Name = {{ ngircd_global_name }}
+Network = {{ ngircd_global_network }}
+{% if ngircd_global_password is defined %}
+Password = {{ ngircd_global_password }}
 {% endif %}
-
-	# Ports on which the server should listen. There may be more than
-	# one port, separated with ",". (Default: 6667)
-{% if ngircd_ports is defined %}
-	Ports = {{ ngircd_ports|join(', ') }}
-{% else %}
-	;Ports = 6667, 6668, 6669
+PidFile = {{ ngircd_global_pidfile }}
+{% if ngircd_global_ports is defined %}
+Ports = {{ ngircd_global_ports|join(', ') if ngircd_global_ports is iterable else ngircd_global_ports }}
 {% endif %}
-
-	# Group ID under which the ngIRCd should run; you can use the name
-	# of the group or the numerical ID. ATTENTION: For this to work the
-	# server must have been started with root privileges!
-	ServerGID = {{ ngircd_servergid if ngircd_servergid is defined else 'ngircd' }}
-
-	# User ID under which the server should run; you can use the name
-	# of the user or the numerical ID. ATTENTION: For this to work the
-	# server must have been started with root privileges! In addition,
-	# the configuration and MOTD files must be readable by this user,
-	# otherwise RESTART and REHASH won't work!
-	ServerUID = {{ ngircd_serveruid if ngircd_serveruid is defined else 'ngircd' }}
+ServerGID = {{ ngircd_global_servergid }}
+ServerUID = {{ ngircd_global_serveruid }}
 
 [Limits]
-	# Define some limits and timeouts for this ngIRCd instance. Default
-	# values should be safe, but it is wise to double-check :-)
-
-	# The server tries every <ConnectRetry> seconds to establish a link
-	# to not yet (or no longer) connected servers.
-	ConnectRetry = {{ ngircd_connectretry if ngircd_connectretry is defined else '60' }}
-
-	# Number of seconds after which the whole daemon should shutdown when
-	# no connections are left active after handling at least one client
-	# (0: never, which is the default).
-	# This can be useful for testing or when ngIRCd is started using
-	# "socket activation" with systemd(8), for example.
-	IdleTimeout = {{ ngircd_idletimeout if ngircd_idletimeout is defined else '0' }}
-
-	# Maximum number of simultaneous in- and outbound connections the
-	# server is allowed to accept (0: unlimited):
-	MaxConnections = {{ ngircd_maxconnections if ngircd_maxconnections is defined else '0' }}
-
-	# Maximum number of simultaneous connections from a single IP address
-	# the server will accept (0: unlimited):
-	MaxConnectionsIP = {{ ngircd_maxconnectionsip if ngircd_maxconnectionsip is defined else '5' }}
-
-	# Maximum number of channels a user can be member of (0: no limit):
-	MaxJoins = {{ ngircd_maxjoins if ngircd_maxjoins is defined else '10' }}
-
-	# Maximum length of an user nickname (Default: 9, as in RFC 2812).
-	# Please note that all servers in an IRC network MUST use the same
-	# maximum nickname length!
-	MaxNickLength = {{ ngircd_maxnicklength if ngircd_maxnicklength is defined else '9' }}
-
-	# Maximum number of channels returned in response to a /list
-	# command (0: unlimited):
-	MaxListSize = {{ ngircd_maxlistsize if ngircd_maxlistsize is defined else '100' }}
-
-	# After <PingTimeout> seconds of inactivity the server will send a
-	# PING to the peer to test whether it is alive or not.
-	PingTimeout = {{ ngircd_pingtimeout if ngircd_pingtimeout is defined else '120' }}
-
-	# If a client fails to answer a PING with a PONG within <PongTimeout>
-	# seconds, it will be disconnected by the server.
-	PongTimeout = {{ ngircd_pongtimeout if ngircd_pongtimeout is defined else '20' }}
+ConnectRetry = {{ ngircd_limits_connectretry }}
+IdleTimeout = {{ ngircd_limits_idletimeout }}
+MaxConnections = {{ ngircd_limits_maxconnections }}
+MaxConnectionsIP = {{ ngircd_limits_maxconnectionsip }}
+MaxJoins = {{ ngircd_limits_maxjoins }}
+MaxNickLength = {{ ngircd_limits_maxnicklength }}
+MaxListSize = {{ ngircd_limits_maxlistsize }}
+PingTimeout = {{ ngircd_limits_pingtimeout }}
+PongTimeout = {{ ngircd_limits_pongtimeout }}
 
 [Options]
-	# Optional features and configuration options to further tweak the
-	# behavior of ngIRCd. If you want to get started quickly, you most
-	# probably don't have to make changes here -- they are all optional.
-
-	# List of allowed channel types (channel prefixes) for newly created
-	# channels on the local server. By default, all supported channel
-	# types are allowed. Set this variable to the empty string to disallow
-	# creation of new channels by local clients at all.
-	AllowedChannelTypes = {{ ngircd_allowedchanneltypes if ngircd_allowedchanneltypes is defined else '#&+' }}
-
-	# Are remote IRC operators allowed to control this server, e.g.
-	# use commands like CONNECT, SQUIT, DIE, ...?
-	AllowRemoteOper = {{ 'yes' if ngircd_allowremoteoper is defined and ngircd_allowremoteoper else 'no' }}
-
-	# A directory to chroot in when everything is initialized. It
-	# doesn't need to be populated if ngIRCd is compiled as a static
-	# binary. By default ngIRCd won't use the chroot() feature.
-	# ATTENTION: For this to work the server must have been started
-	# with root privileges!
-{% if ngircd_chrootdir is defined %}
-	ChrootDir = {{ ngircd_chrootdir }}
-{% else %}
-	;ChrootDir = /var/empty
+AllowedChannelTypes = {{ ngircd_options_allowedchanneltypes }}
+AllowRemoteOper = {{ 'yes' if ngircd_options_allowremoteoper else 'no' }}
+{% if ngircd_options_chrootdir is defined %}
+ChrootDir = {{ ngircd_options_chrootdir }}
 {% endif %}
-
-	# Set this hostname for every client instead of the real one.
-	# Use %x to add the hashed value of the original hostname.
-{% if ngircd_cloakhost is defined %}
-	CloakHost = {{ ngircd_cloakhost }}
-{% else %}
-	;CloakHost = cloaked.host
+{% if ngircd_options_cloakhost is defined %}
+CloakHost = {{ ngircd_options_cloakhost }}
 {% endif %}
-
-	# Use this hostname for hostname cloaking on clients that have the
-	# user mode "+x" set, instead of the name of the server.
-	# Use %x to add the hashed value of the original hostname.
-{% if ngircd_cloakhostmodex is defined %}
-	CloakHostModeX = {{ ngircd_cloakhostmodex }}
-{% else %}
-	;CloakHostModeX = cloaked.user
+{% if ngircd_options_cloakhostmodex is defined %}
+CloakHostModeX = {{ ngircd_options_cloakhostmodex }}
 {% endif %}
-
-	# The Salt for cloaked hostname hashing. When undefined a random
-	# hash is generated after each server start.
-{% if ngircd_cloakhostsalt is defined %}
-	CloakHostSalt = {{ ngircd_cloakhostsalt }}
-{% else %}
-	;CloakHostSalt = abcdefghijklmnopqrstuvwxyz
+{% if ngircd_options_cloakhostsalt is defined %}
+CloakHostSalt = {{ ngircd_options_cloakhostsalt }}
 {% endif %}
-
-	# Set every clients' user name to their nickname
-{% if ngircd_cloakusertonick is defined %}
-	CloakUserToNick = {{ 'yes' if ngircd_cloakusertonick else 'no' }}
-{% else %}
-	;CloakUserToNick = yes
+{% if ngircd_options_cloakusertonick is defined %}
+CloakUserToNick = {{ 'yes' if ngircd_options_cloakusertonick else 'no' }}
 {% endif %}
-
-	# Try to connect to other IRC servers using IPv4 and IPv6, if possible.
-	ConnectIPv6 = {{ 'no' if ngircd_connectipv6 is defined and not ngircd_connectipv6 else 'yes' }}
-	ConnectIPv4 = {{ 'no' if ngircd_connectipv4 is defined and not ngircd_connectipv4 else 'yes' }}
-
-	# Default user mode(s) to set on new local clients. Please note that
-	# only modes can be set that the client could set using regular MODE
-	# commands, you can't set "a" (away) for example! Default: none.
-	DefaultUserModes = {{ ngircd_defaultusermodes if ngircd_defaultusermodes is defined else 'i' }}
-
-	# Do DNS lookups when a client connects to the server.
-	DNS = {{ 'yes' if ngircd_dns is defined and ngircd_dns else 'no' }}
-
-	# Do IDENT lookups if ngIRCd has been compiled with support for it.
-	# Users identified using IDENT are registered without the "~" character
-	# prepended to their user name.
-	Ident = {{ 'yes' if ngircd_ident is defined and ngircd_ident else 'no' }}
-
-	# Directory containing configuration snippets (*.conf), that should
-	# be read in after parsing this configuration file.
-{% if ngircd_incluedir is defined %}
-	IncludeDir = {{ ngircd_incluedir }}
-{% else %}
-	;IncludeDir = /etc/conf.d
+ConnectIPv6 = {{ 'yes' if ngircd_options_connectipv6 else 'no' }}
+ConnectIPv4 = {{ 'yes' if ngircd_options_connectipv4 else 'no' }}
+DefaultUserModes = {{ ngircd_options_defaultusermodes }}
+DNS = {{ 'yes' if ngircd_options_dns else 'no' }}
+Ident = {{ 'yes' if ngircd_options_ident else 'no' }}
+{% if ngircd_includedir is defined %}
+IncludeDir = {{ ngircd_options_includedir }}
 {% endif %}
-
-	# Enhance user privacy slightly (useful for IRC server on TOR or I2P)
-	# by censoring some information like idle time, logon time, etc.
-	MorePrivacy = {{ 'yes' if ngircd_moreprivacy is defined and ngircd_moreprivacy else 'no' }}
-
-	# Normally ngIRCd doesn't send any messages to a client until it is
-	# registered. Enable this option to let the daemon send "NOTICE *"
-	# messages to clients while connecting.
-	NoticeBeforeRegistration = {{ 'yes' if ngircd_noticebeforeregistration is defined and ngircd_noticebeforeregistration else 'no' }}
-
-	# Should IRC Operators be allowed to use the MODE command even if
-	# they are not(!) channel-operators?
-	OperCanUseMode = {{ 'yes' if ngircd_opercanusemode is defined and ngircd_opercanusemode else 'no' }}
-
-	# Should IRC Operators get AutoOp (+o) in persistent (+P) channels?
-	OperChanPAutoOp = {{ 'no' if ngircd_opercanpautoop is defined and not ngircd_opercanpautoop else 'yes' }}
-
-	# Mask IRC Operator mode requests as if they were coming from the
-	# server? (This is a compatibility hack for ircd-irc2 servers)
-	OperServerMode = {{ 'yes' if ngircd_operservermode is defined and ngircd_operservermode else 'no' }}
-
-	# Use PAM if ngIRCd has been compiled with support for it.
-	# Users identified using PAM are registered without the "~" character
-	# prepended to their user name.
-	PAM = {{ 'no' if ngircd_pam is defined and not ngircd_pam else 'yes' }}
-
-	# When PAM is enabled, all clients are required to be authenticated
-	# using PAM; connecting to the server without successful PAM
-	# authentication isn't possible.
-	# If this option is set, clients not sending a password are still
-	# allowed to connect: they won't become "identified" and keep the "~"
-	# character prepended to their supplied user name.
-	# Please note: To make some use of this behavior, it most probably
-	# isn't useful to enable "Ident", "PAM" and "PAMIsOptional" at the
-	# same time, because you wouldn't be able to distinguish between
-	# Ident'ified and PAM-authenticated users: both don't have a "~"
-	# character prepended to their respective user names!
-	PAMIsOptional = {{ 'yes' if ngircd_pamisoptional is defined and ngircd_pamisoptional else 'no' }}
-
-	# Let ngIRCd send an "authentication PING" when a new client connects,
-	# and register this client only after receiving the corresponding
-	# "PONG" reply.
-	RequireAuthPing = {{ 'yes' if ngircd_requireauthping is defined and ngircd_requireauthping else 'no' }}
-
-	# Silently drop all incoming CTCP requests.
-	ScrubCTCP = {{ 'yes' if ngircd_scrubctcp is defined and ngircd_scrubctcp else 'no' }}
-
-	# Syslog "facility" to which ngIRCd should send log messages.
-	# Possible values are system dependent, but most probably auth, daemon,
-	# user and local1 through local7 are possible values; see syslog(3).
-	# Default is "local5" for historical reasons, you probably want to
-	# change this to "daemon", for example.
-	SyslogFacility = {{ ngircd_syslogfacility if ngircd_syslogfacility is defined else 'local5' }}
-
-	# Password required for using the WEBIRC command used by some
-	# Web-to-IRC gateways. If not set/empty, the WEBIRC command can't
-	# be used. (Default: not set)
+MorePrivacy = {{ 'yes' if ngircd_options_moreprivacy else 'no' }}
+NoticeBeforeRegistration = {{ 'yes' if ngircd_options_noticebeforeregistration else 'no' }}
+OperCanUseMode = {{ 'yes' if ngircd_options_opercanusemode else 'no' }}
+OperChanPAutoOp = {{ 'yes' if ngircd_options_operchanpautoop else 'no' }}
+OperServerMode = {{ 'yes' if ngircd_options_operservermode else 'no' }}
+PAM = {{ 'yes' if ngircd_options_pam else 'no' }}
+PAMIsOptional = {{ 'yes' if ngircd_options_pamisoptional else 'no' }}
+RequireAuthPing = {{ 'yes' if ngircd_options_requireauthping else 'no' }}
+ScrubCTCP = {{ 'yes' if ngircd_options_scrubctcp else 'no' }}
+SyslogFacility = {{ ngircd_options_syslogfacility }}
 {% if ngircd_webircpassword is defined %}
-	WebircPassword = {{ ngircd_webircpassword }}
-{% else %}
-	;WebircPassword = xyz
+WebircPassword = {{ ngircd_options_webircpassword }}
 {% endif %}
 
-;[SSL]
-	# SSL-related configuration options. Please note that this section
-	# is only available when ngIRCd is compiled with support for SSL!
-	# So don't forget to remove the ";" above if this is the case ...
-
-	# SSL Server Key Certificate
-{% if ngircd_certfile is defined %}
-	CertFile = {{ ngircd_certfile }}
-{% else %}
-	;CertFile = /etc/ssl/server-cert.pem
-{% endif %}
-
-	# Select cipher suites allowed for SSL/TLS connections. This defaults
-	# to HIGH:!aNULL:@STRENGTH (OpenSSL) or SECURE128 (GnuTLS).
-	# See 'man 1ssl ciphers' (OpenSSL) or 'man 3 gnutls_priority_init'
-	# (GnuTLS) for details.
-	# For OpenSSL:
-	;CipherList = HIGH:!aNULL:@STRENGTH:!SSLv3
-	# For GnuTLS:
-	;CipherList = SECURE128:-VERS-SSL3.0
-{% if ngircd_cipherlist is defined %}
-	CipherList = {{ ngircd_cipherlist|join(':') }}
-{% endif %}
-
-	# Diffie-Hellman parameters
-{% if ngircd_dhfile is defined %}
-	DHFile = {{ ngircd_dhfile }}
-{% else %}
-	;DHFile = /etc/ssl/dhparams.pem
-{% endif %}
-
-	# SSL Server Key
-{% if ngircd_keyfile is defined %}
-	KeyFile = {{ ngircd_keyfile }}
-{% else %}
-	;KeyFile = /etc/ssl/server-key.pem
-{% endif %}
-
-	# password to decrypt SSLKeyFile (OpenSSL only)
-{% if ngircd_keyfilepassword is defined %}
-	KeyFilePassword = {{ ngircd_keyfilepassword }}
-{% else %}
-	;KeyFilePassword = secret
-{% endif %}
-
-	# Additional Listen Ports that expect SSL/TLS encrypted connections
-{% if ngircd_ssl_ports is defined %}
-	Ports = {{ ngircd_ssl_ports|join(', ') }}
-{% else %}
-	;Ports = 6697, 9999
-{% endif %}
-
-{% if ngircd_operators is defined %}
-{%   for operator in ngircd_operators %}
-{%     if operator['name'] is defined %}
-[Operator]
-	Name = {{ operator['name'] }}
-	Password = {{ operator['password'] if operator['password'] is defined else operator['name']|hash('md5') }}
-	Mask = {{ operator['mask'] if operator['mask'] is defined else '*' }}
-
-{%     endif %}
-{%   endfor %}
-{% endif %}
-
-{% if ngircd_servers_hub is defined and ngircd_servers_leafs is defined %}
-{%   for hub in ngircd_servers_hub %}
-{%     if hub['name'] == inventory_hostname %}
-{%       for leaf in ngircd_servers_leafs %}
-[Server]
-{%         if leaf['bind'] is defined %}
-	Bind = {{ leaf['bind'] }}
-{%         endif %}
-{%         if leaf['group'] is defined %}
-	Group = {{ leaf['group'] }}
-{%         endif %}
-	MyPassword = {{ hub['mypassword'] }}
-	Name = {{ leaf['name'] }}
-	Passive = {{ 'yes' if leaf['passive'] is defined and leaf['passive'] else 'no' }}
-	PeerPassword = {{ leaf['mypassword'] }}
-	Port = {{ leaf['port'] if leaf['port'] is defined else '6667' }}
-	SSLConnect = {{ 'yes' if leaf['sslconnect'] is defined and leaf['sslconnect'] else 'no' }}
-	ServiceMask = {{ leaf['servicemask']|join(',') if leaf['servicemask'] is defined else '*Serv,Global' }}
-
-{%       endfor %}
-{%     else %}
-{%       for leaf in ngircd_servers_leafs %}
-{%         if leaf['name'] == inventory_hostname %}
-[Server]
-{%           if hub['bind'] is defined %}
-	Bind = {{ hub['bind'] }}
-{%           endif %}
-{%           if hub['group'] is defined %}
-	Group = {{ hub['group'] }}
-{%           endif %}
-	Host = {{ hub['name'] }}
-	MyPassword = {{ leaf['mypassword'] }}
-	Name = {{ hub['name'] }}
-	Passive = {{ 'yes' if hub['passive'] is defined and hub['passive'] else 'no' }}
-	PeerPassword = {{ hub['mypassword'] }}
-	Port = {{ hub['port'] if hub['port'] is defined else '6667' }}
-	ServiceMask = {{ hub['servicemask']|join(',') if hub['servicemask'] is defined else '*Serv,Global' }}
-	SSLConnect = {{ 'yes' if hub['sslconnect'] is defined and hub['sslconnect'] else 'no' }}
-
-{%         endif %}
-{%       endfor %}
-{%     endif %}
-{%   endfor %}
+{% if ngircd_ssl is defined and ngircd_ssl %}
+[SSL]
+{%   if ngircd_ssl_certfile is defined %}
+CertFile = {{ ngircd_ssl_certfile }}
+{%   endif %}
+{%   if ngircd_ssl_cipherlist is defined %}
+CipherList = {{ ngircd_ssl_cipherlist }}
+{%   endif %}
+{%   if ngircd_ssl_dhfile is defined %}
+DHFile = {{ ngircd_ssl_dhfile }}
+{%   endif %}
+{%   if ngircd_ssl_keyfile is defined %}
+KeyFile = {{ ngircd_ssl_keyfile }}
+{%   endif %}
+{%   if ngircd_ssl_keyfilepassword is defined %}
+KeyFilePassword = {{ ngircd_ssl_keyfilepassword }}
+{%   endif %}
+{%   if ngircd_ssl_ports is defined %}
+Ports = {{ ngircd_ssl_ports|join(', ') if ngircd_ssl_ports is iterable else ngircd_ssl_ports }}
+{%   endif %}
 {% endif %}
 
 {% if ngircd_channels is defined %}
 {%   for channel in ngircd_channels %}
-{%     if channel['name'] is defined %} 
 [Channel]
-	Name = {{ channel['name'] }}
-	Modes = {{ channel['modes'] if channel['modes'] is defined else '' }}
-	Topic = {{ channel['topic'] if channel['topic'] is defined else '' }}
-	Key = {{ channel['key'] if channel['key'] is defined else '' }}
-	KeyFile = {{ channel['keyfile'] if channel['keyfile'] is defined else '' }}
-	MaxUsers = {{ channel['maxusers'] if channel['maxusers'] is defined else '65535' }}
+{%     if channel.key is defined %}
+Key = {{ channel.key }}
+{%     endif %}
+{%     if channel.keyfile is defined %}
+KeyFile = {{ channel.keyfile }}
+{%     endif %}
+{%     if channel.maxusers is defined %}
+MaxUsers = {{ channel.maxusers }}
+{%     endif %}
+{%     if channel.modes is defined %}
+Modes = {{ channel.modes }}
+{%     endif %}
+{%     if channel.name is defined %}
+Name = {{ channel.name }}
+{%     endif %}
+{%     if channel.topic is defined %}
+Topic = {{ channel.topic }}
+{%     endif %}
+{%     if not loop.last %}
 
 {%     endif %}
 {%   endfor %}
 {% endif %}
-# -eof-
+
+{% if ngircd_operators is defined %}
+{%   for operator in ngircd_operators %}
+[Operator]
+{%     if operator.name is defined %}
+Name = {{ operator.name }}
+{%     endif %}
+{%     if operator.password is defined %}
+Password = {{ operator.password }}
+{%     endif %}
+{%     if operator.mask is defined %}
+Mask = {{ operator.mask }}
+{%     endif %}
+{%     if not loop.last %}
+
+{%     endif %}
+{%   endfor %}
+{% endif %}
+
+{% if ngircd_servers is defined %}
+{%  for server in ngircd_servers %}
+{%     if server.name != inventory_hostname %}
+[Server]
+{%       if server.bind is defined %}
+Bind = {{ server.bind }}
+{%       endif %}
+{%       if server.group is defined %}
+Group = {{ server.group }}
+{%       endif %}
+{%       if server.host is defined %}
+Host = {{ server.host }}
+{%       endif %}
+{%       if server.mypassword is defined %}
+MyPassword = {{ server.mypassword }}
+{%       endif %}
+{%       if server.name is defined %}
+Name = {{ server.name }}
+{%       endif %}
+{%       if server.passive is defined %}
+Passive = {{ 'yes' if server.passive else 'no' }}
+{%       endif %}
+{%       if server.peerpassword is defined %}
+PeerPassword = {{ server.peerpassword }}
+{%       endif %}
+{%       if server.port is defined %}
+Port = {{ server.port }}
+{%       endif %}
+{%       if server.servicemask is defined %}
+ServiceMask = {{ server.servicemask }}
+{%       endif %}
+{%       if server.sslconnect is defined %}
+SSLConnect = {{ 'yes' if server.sslconnect else 'no' }}
+{%       endif %}
+{%     endif %}
+
+{%   endfor %}
+{% endif %}
+

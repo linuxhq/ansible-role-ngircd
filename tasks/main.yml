@@ -1,5 +1,5 @@
 ---
-- name: Ensure ngircd is installed
+- name: Ensure that the ngircd package is installed
   tags: ngircd
   yum:
     enablerepo: epel
@@ -18,7 +18,7 @@
       mode: 0660
     notify: restart ngircd
 
-  - name: Create message of the day
+  - name: Creating message of the day
     template:
       src: ngircd.motd.j2
       dest: /etc/ngircd.motd
@@ -26,9 +26,9 @@
       group: ngircd
       mode: 0660
     notify: restart ngircd
-    when: ngircd_motd is defined
+    when: ngircd_global_motdfile is defined
 
-  - name: Ensure ngircd is running and enabled on boot
+  - name: Ensure that ngircd is running and enabled on boot
     service:
       enabled: yes
       name: ngircd
