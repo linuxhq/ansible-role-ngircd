@@ -71,7 +71,7 @@ Additional configruation variables not defined by default:
     ngircd_options_incluedir: /etc/ngircd.d
     ngircd_options_webircpassword: xyz
     ngircd_ssl_certfile: /etc/ssl/server-cert.pem
-    ngircd_ssl_cipherlist: [ 'SECURE128', '-VERS-SSL3.0' ]
+    ngircd_ssl_cipherlist: 'SECURE128:-VERS-SSL3.0'
     ngircd_ssl_dhfile: /etc/ssl/dhparams.pem
     ngircd_ssl_keyfile: /etc/ssl/server-key.pem
     ngircd_ssl_keyfilepassword: secret
