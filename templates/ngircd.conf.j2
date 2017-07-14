@@ -144,41 +144,40 @@ Mask = {{ operator.mask }}
 {% endif %}
 
 {% if ngircd_servers is defined %}
-{%  for server in ngircd_servers %}
-{%     if server.name != inventory_hostname %}
+{%   for key in ngircd_servers.keys()|sort %}
+{%     if key != ansible_hostname %}
 [Server]
-{%       if server.bind is defined %}
-Bind = {{ server.bind }}
+{%       if ngircd_servers[key].bind is defined %}
+Bind = {{ ngircd_servers[key].bind }}
 {%       endif %}
-{%       if server.group is defined %}
-Group = {{ server.group }}
+{%       if ngircd_servers[key].group is defined %}
+Group = {{ ngircd_servers[key].group }}
 {%       endif %}
-{%       if server.host is defined %}
-Host = {{ server.host }}
+{%       if ngircd_servers[key].host is defined %}
+Host = {{ ngircd_servers[key].host }}
 {%       endif %}
-{%       if server.mypassword is defined %}
-MyPassword = {{ server.mypassword }}
+{%       if ngircd_servers[key].mypassword is defined %}
+MyPassword = {{ ngircd_servers[key].mypassword }}
 {%       endif %}
-{%       if server.name is defined %}
-Name = {{ server.name }}
+{%       if ngircd_servers[key].name is defined %}
+Name = {{ ngircd_servers[key].name }}
 {%       endif %}
-{%       if server.passive is defined %}
-Passive = {{ 'yes' if server.passive else 'no' }}
+{%       if ngircd_servers[key].passive is defined %}
+Passive = {{ 'yes' if ngircd_servers[key].passive else 'no' }}
 {%       endif %}
-{%       if server.peerpassword is defined %}
-PeerPassword = {{ server.peerpassword }}
+{%       if ngircd_servers[ansible_hostname].mypassword is defined %}
+PeerPassword = {{ ngircd_servers[ansible_hostname].mypassword }}
 {%       endif %}
-{%       if server.port is defined %}
-Port = {{ server.port }}
+{%       if ngircd_servers[key].port is defined %}
+Port = {{ ngircd_servers[key].port }}
 {%       endif %}
-{%       if server.servicemask is defined %}
-ServiceMask = {{ server.servicemask }}
+{%       if ngircd_servers[key].servicemask is defined %}
+ServiceMask = {{ ngircd_servers[key].servicemask }}
 {%       endif %}
-{%       if server.sslconnect is defined %}
-SSLConnect = {{ 'yes' if server.sslconnect else 'no' }}
+{%       if ngircd_servers[key].sslconnect is defined %}
+SSLConnect = {{ 'yes' if ngircd_servers[key].sslconnect else 'no' }}
 {%       endif %}
-{%     endif %}
 
+{%     endif %}
 {%   endfor %}
 {% endif %}
-

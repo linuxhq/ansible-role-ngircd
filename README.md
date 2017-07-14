@@ -51,7 +51,7 @@ Available variables are listed below, along with default values:
     ngircd_options_requireauthping: False
     ngircd_options_scrubctcp: False
     ngircd_options_syslogfacility: local5
-    ngircd_servers: []
+    ngircd_servers: {}
     ngircd_ssl: False
 
 Additional configruation variables not defined by default:
@@ -105,19 +105,19 @@ Example configuration for defining operators:
         password: pass2 (plaintext)
         mask: *!*user2@host2.com
 
-Additional server variable not defined by default:
+Example configuration for defining servers:
 
-    ngircd_servers
-      - name: server1.linuxhq.org
+    ngircd_servers:
+      server1:
+        name: server1.linuxhq.org
         passive: False
-        peerpassword: mFyu7YRJAhcStWBmZINDiu4c
         port: 6667
         mypassword: QKYt88uqiICVF3KPTMgL9PQm
         sslconnect: False
         servicemask: '*Serv,Global'
-      - name: server2.linuxhq.org
+      server2:
+        name: server2.linuxhq.org
         passive: False
-        peerpassword: QKYt88uqiICVF3KPTMgL9PQm
         port: 6667
         mypassword: mFyu7YRJAhcStWBmZINDiu4c
         sslconnect: False
@@ -172,16 +172,16 @@ Additional server variable not defined by default:
           ngircd_ports:
             - 6667
           ngircd_servers:
-            - name: server1.linuxhq.org
+            server1:
+              name: server1.linuxhq.org
               mypassword: I6slKBEBkMOhz793KYz79A7j
               passive: False
-              peerpassword: 4vPxc9VyQuMBJe98x3ZMNY9B
               port: 6667
               sslconnect: False
-            - name: server2.linuxhq.org
+            server2:
+              name: server2.linuxhq.org
               mypassword: 4vPxc9VyQuMBJe98x3ZMNY9B
               passive: False
-              peerpassword: I6slKBEBkMOhz793KYz79A7j
               port: 6667
               sslconnect: False
 
@@ -199,13 +199,15 @@ Additional server variable not defined by default:
               password: QA@#h$$LysnSwGIppY
               mask: '*!*tkimball@*'
           ngircd_servers:
-            - name: server1.linuxhq.org
+            server1:
+              name: server1.linuxhq.org
               mypassword: I6slKBEBkMOhz793KYz79A7j
               passive: False
               peerpassword: 4vPxc9VyQuMBJe98x3ZMNY9B
               port: 6697
               sslconnect: True
-            - name: server2.linuxhq.org
+            server2:
+              name: server2.linuxhq.org
               mypassword: 4vPxc9VyQuMBJe98x3ZMNY9B
               passive: False
               peerpassword: I6slKBEBkMOhz793KYz79A7j
