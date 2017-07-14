@@ -108,15 +108,16 @@ Example configuration for defining operators:
 Example configuration for defining servers:
 
     ngircd_servers:
-      server1:
-        name: server1.linuxhq.org
+      hub:
+        host: hub.linuxhq.org
+        name: hub.linuxhq.org
         passive: False
         port: 6667
         mypassword: QKYt88uqiICVF3KPTMgL9PQm
         sslconnect: False
         servicemask: '*Serv,Global'
-      server2:
-        name: server2.linuxhq.org
+      leaf1:
+        name: leaf1.linuxhq.org
         passive: False
         port: 6667
         mypassword: mFyu7YRJAhcStWBmZINDiu4c
@@ -172,14 +173,15 @@ Example configuration for defining servers:
           ngircd_ports:
             - 6667
           ngircd_servers:
-            server1:
-              name: server1.linuxhq.org
+            hub:
+              host: hub.linuxhq.org
+              name: hub.linuxhq.org
               mypassword: I6slKBEBkMOhz793KYz79A7j
               passive: False
               port: 6667
               sslconnect: False
-            server2:
-              name: server2.linuxhq.org
+            leaf1:
+              name: leaf1.linuxhq.org
               mypassword: 4vPxc9VyQuMBJe98x3ZMNY9B
               passive: False
               port: 6667
@@ -199,18 +201,17 @@ Example configuration for defining servers:
               password: QA@#h$$LysnSwGIppY
               mask: '*!*tkimball@*'
           ngircd_servers:
-            server1:
-              name: server1.linuxhq.org
+            hub:
+              name: hub.linuxhq.org
+              name: hub.linuxhq.org
               mypassword: I6slKBEBkMOhz793KYz79A7j
               passive: False
-              peerpassword: 4vPxc9VyQuMBJe98x3ZMNY9B
               port: 6697
               sslconnect: True
-            server2:
-              name: server2.linuxhq.org
+            leaf1:
+              name: leaf1.linuxhq.org
               mypassword: 4vPxc9VyQuMBJe98x3ZMNY9B
               passive: False
-              peerpassword: I6slKBEBkMOhz793KYz79A7j
               port: 6697
               sslconnect: True
           ngircd_ssl: True
