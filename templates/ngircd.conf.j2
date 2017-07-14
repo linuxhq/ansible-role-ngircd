@@ -156,8 +156,8 @@ Group = {{ ngircd_servers[key].group }}
 {%       if ngircd_servers[key].host is defined %}
 Host = {{ ngircd_servers[key].host }}
 {%       endif %}
-{%       if ngircd_servers[key].mypassword is defined %}
-MyPassword = {{ ngircd_servers[key].mypassword }}
+{%       if ngircd_servers[ansible_hostname].mypassword is defined %}
+MyPassword = {{ ngircd_servers[ansible_hostname].mypassword }}
 {%       endif %}
 {%       if ngircd_servers[key].name is defined %}
 Name = {{ ngircd_servers[key].name }}
@@ -165,8 +165,8 @@ Name = {{ ngircd_servers[key].name }}
 {%       if ngircd_servers[key].passive is defined %}
 Passive = {{ 'yes' if ngircd_servers[key].passive else 'no' }}
 {%       endif %}
-{%       if ngircd_servers[ansible_hostname].mypassword is defined %}
-PeerPassword = {{ ngircd_servers[ansible_hostname].mypassword }}
+{%       if ngircd_servers[key].mypassword is defined %}
+PeerPassword = {{ ngircd_servers[key].mypassword }}
 {%       endif %}
 {%       if ngircd_servers[key].port is defined %}
 Port = {{ ngircd_servers[key].port }}
