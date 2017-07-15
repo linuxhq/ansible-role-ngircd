@@ -59,7 +59,7 @@ ConnectIPv4 = {{ 'yes' if ngircd_options_connectipv4 else 'no' }}
 DefaultUserModes = {{ ngircd_options_defaultusermodes }}
 DNS = {{ 'yes' if ngircd_options_dns else 'no' }}
 Ident = {{ 'yes' if ngircd_options_ident else 'no' }}
-{% if ngircd_includedir is defined %}
+{% if ngircd_options_includedir is defined %}
 IncludeDir = {{ ngircd_options_includedir }}
 {% endif %}
 MorePrivacy = {{ 'yes' if ngircd_options_moreprivacy else 'no' }}
@@ -72,7 +72,7 @@ PAMIsOptional = {{ 'yes' if ngircd_options_pamisoptional else 'no' }}
 RequireAuthPing = {{ 'yes' if ngircd_options_requireauthping else 'no' }}
 ScrubCTCP = {{ 'yes' if ngircd_options_scrubctcp else 'no' }}
 SyslogFacility = {{ ngircd_options_syslogfacility }}
-{% if ngircd_webircpassword is defined %}
+{% if ngircd_options_webircpassword is defined %}
 WebircPassword = {{ ngircd_options_webircpassword }}
 {% endif %}
 

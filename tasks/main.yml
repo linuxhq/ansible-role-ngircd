@@ -9,6 +9,16 @@
   register: ngircd_yum
 
 - block:
+  - name: Determine if rpmorig configuration exists
+    stat:
+      path: /etc/ngircd.conf.rpmorig
+    register: ngircd_stat
+
+  - name: Moving original configuration aside (if applicable)
+    command: |
+      mv /etc/ngircd.conf /etc/ngircd.conf.rpmorig
+    when: not ngircd_stat.stat.exists
+
   - name: Applying ngircd configuration
     template:
       src: ngircd.conf.j2
