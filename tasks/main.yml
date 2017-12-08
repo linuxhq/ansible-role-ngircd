@@ -1,11 +1,11 @@
 ---
 - name: Ensure that the ngircd package is installed
   tags: ngircd
+  become: true
   yum:
     enablerepo: epel
     name: ngircd
     state: present
-    update_cache: yes
   register: ngircd_yum
 
 - block:
@@ -14,9 +14,10 @@
       path: /etc/ngircd.conf.rpmorig
     register: ngircd_stat
 
-  - name: Moving original configuration aside (if applicable)
-    command: |
-      mv /etc/ngircd.conf /etc/ngircd.conf.rpmorig
+  - name: Copying original configuration to rpmorig location
+    copy:
+      src: /etc/ngircd.conf
+      dest: /etc/ngircd.conf.rpmorig
     when: not ngircd_stat.stat.exists
 
   - name: Applying ngircd configuration
@@ -44,5 +45,6 @@
       name: ngircd
       state: started
   tags: ngircd
+  become: true
   when: ngircd_yum|success
 ...

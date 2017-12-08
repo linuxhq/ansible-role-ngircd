@@ -222,7 +222,7 @@ Example configuration for defining servers:
 
 ## License
 
-BSD
+GPLv3
 
 ## Author Information
 

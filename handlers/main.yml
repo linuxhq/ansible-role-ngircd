@@ -1,6 +1,7 @@
 ---
 - name: restart ngircd
   tags: ngircd
+  become: true
   service:
     name: ngircd
     state: restarted
