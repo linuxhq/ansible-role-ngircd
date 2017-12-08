@@ -18,6 +18,7 @@
     copy:
       src: /etc/ngircd.conf
       dest: /etc/ngircd.conf.rpmorig
+      remote_src: yes
     when: not ngircd_stat.stat.exists
 
   - name: Applying ngircd configuration
