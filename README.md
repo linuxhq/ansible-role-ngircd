@@ -35,24 +35,24 @@ Available variables are listed below, along with default values:
     ngircd_limits_pongtimeout: 20
     ngircd_operators: []
     ngircd_options_allowedchanneltypes: '#&+'
-    ngircd_options_allowremoteoper: False
-    ngircd_options_connectipv6: True
-    ngircd_options_connectipv4: True
+    ngircd_options_allowremoteoper: false
+    ngircd_options_connectipv6: true
+    ngircd_options_connectipv4: true
     ngircd_options_defaultusermodes: i
-    ngircd_options_dns: True
-    ngircd_options_ident: True
-    ngircd_options_moreprivacy: False
-    ngircd_options_noticebeforeregistration: False
-    ngircd_options_opercanusemode: False
-    ngircd_options_operchanpautoop: True
-    ngircd_options_operservermode: False
-    ngircd_options_pam: True
-    ngircd_options_pamisoptional: False
-    ngircd_options_requireauthping: False
-    ngircd_options_scrubctcp: False
+    ngircd_options_dns: true
+    ngircd_options_ident: true
+    ngircd_options_moreprivacy: false
+    ngircd_options_noticebeforeregistration: false
+    ngircd_options_opercanusemode: false
+    ngircd_options_operchanpautoop: true
+    ngircd_options_operservermode: false
+    ngircd_options_pam: true
+    ngircd_options_pamisoptional: false
+    ngircd_options_requireauthping: false
+    ngircd_options_scrubctcp: false
     ngircd_options_syslogfacility: local5
     ngircd_servers: {}
-    ngircd_ssl: False
+    ngircd_ssl: false
 
 Additional configruation variables not defined by default:
 
@@ -67,7 +67,7 @@ Additional configruation variables not defined by default:
     ngircd_options_cloakhost: cloaked.host
     ngircd_options_cloakhostmodex: cloaked.user
     ngircd_options_cloakhostsalt: abcdefghijklmnopqrstuvwxyz
-    ngircd_options_cloakusertonick: True
+    ngircd_options_cloakusertonick: true
     ngircd_options_incluedir: /etc/ngircd.d
     ngircd_options_webircpassword: xyz
     ngircd_ssl_certfile: /etc/ssl/server-cert.pem
@@ -98,31 +98,31 @@ Example configuration for defining channels:
 Example configuration for defining operators:
 
     ngircd_operators:
-      - name: nick1
-        password: pass1 (plaintext)
-        mask: *!*user1@host1.com
-      - name: nick2
-        password: pass2 (plaintext)
-        mask: *!*user2@host2.com
+      - name: linuxhq
+        password: sha5shooc8we8Seiseer
+        mask: *@linuxhq.org
+      - name: tkimball
+        password: zajee7ahshoth6faCefu
+        mask: *!tkimball@linuxhq.org
 
 Example configuration for defining servers:
 
     ngircd_servers:
       hub:
         host: hub.linuxhq.org
-        name: hub.linuxhq.org
-        passive: False
-        port: 6667
         mypassword: QKYt88uqiICVF3KPTMgL9PQm
-        sslconnect: False
-        servicemask: '*Serv,Global'
-      leaf1:
-        name: leaf1.linuxhq.org
-        passive: False
+        name: hub.linuxhq.org
+        passive: false
         port: 6667
-        mypassword: mFyu7YRJAhcStWBmZINDiu4c
-        sslconnect: False
         servicemask: '*Serv,Global'
+        sslconnect: false
+      leaf1:
+        mypassword: mFyu7YRJAhcStWBmZINDiu4c
+        name: leaf1.linuxhq.org
+        passive: false
+        port: 6667
+        servicemask: '*Serv,Global'
+        sslconnect: false
 
 ## Dependencies
 
@@ -175,17 +175,17 @@ Example configuration for defining servers:
           ngircd_servers:
             hub:
               host: hub.linuxhq.org
-              name: hub.linuxhq.org
               mypassword: I6slKBEBkMOhz793KYz79A7j
-              passive: False
+              name: hub.linuxhq.org
+              passive: false
               port: 6667
-              sslconnect: False
+              sslconnect: false
             leaf1:
               name: leaf1.linuxhq.org
               mypassword: 4vPxc9VyQuMBJe98x3ZMNY9B
-              passive: False
+              passive: false
               port: 6667
-              sslconnect: False
+              sslconnect: false
 
 #### Configure a IRC network with channels, operators, and servers (ssl only)
 
@@ -202,19 +202,19 @@ Example configuration for defining servers:
               mask: '*!*tkimball@*'
           ngircd_servers:
             hub:
-              name: hub.linuxhq.org
-              name: hub.linuxhq.org
+              host: hub.linuxhq.org
               mypassword: I6slKBEBkMOhz793KYz79A7j
-              passive: False
+              name: hub.linuxhq.org
+              passive: false
               port: 6697
-              sslconnect: True
+              sslconnect: true
             leaf1:
               name: leaf1.linuxhq.org
               mypassword: 4vPxc9VyQuMBJe98x3ZMNY9B
-              passive: False
+              passive: false
               port: 6697
-              sslconnect: True
-          ngircd_ssl: True
+              sslconnect: true
+          ngircd_ssl: true
           ngircd_ssl_certfile: "/etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem"
           ngircd_ssl_cipherlist: 'SECURE128:-VERS-SSL3.0'
           ngircd_ssl_keyfile: "/etc/letsencrypt/live/{{ inventory_hostname }}/privkey.pem"

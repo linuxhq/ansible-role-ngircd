@@ -8,44 +8,42 @@
     state: present
   register: ngircd_yum
 
-- block:
-  - name: Determine if rpmorig configuration exists
-    stat:
-      path: /etc/ngircd.conf.rpmorig
-    register: ngircd_stat
-
-  - name: Copying original configuration to rpmorig location
-    copy:
-      src: /etc/ngircd.conf
-      dest: /etc/ngircd.conf.rpmorig
-      remote_src: yes
-    when: not ngircd_stat.stat.exists
-
-  - name: Applying ngircd configuration
-    template:
-      src: ngircd.conf.j2
-      dest: /etc/ngircd.conf
-      owner: root
-      group: ngircd
-      mode: 0660
-    notify: restart ngircd
-
-  - name: Creating message of the day
-    template:
-      src: ngircd.motd.j2
-      dest: /etc/ngircd.motd
-      owner: root
-      group: ngircd
-      mode: 0660
-    notify: restart ngircd
-    when: ngircd_global_motdfile is defined
-
-  - name: Ensure that ngircd is running and enabled on boot
-    service:
-      enabled: yes
-      name: ngircd
-      state: started
+- name: Applying ngircd configuration
   tags: ngircd
   become: true
-  when: ngircd_yum|success
+  template:
+    src: ngircd.conf.j2
+    dest: /etc/ngircd.conf
+    owner: root
+    group: ngircd
+    mode: 0660
+  notify: restart ngircd
+  register: ngircd_template
+  when:
+    - ngircd_yum|success
+
+- name: Creating message of the day, if applicable.
+  tags: ngircd
+  become: true
+  template:
+    src: ngircd.motd.j2
+    dest: /etc/ngircd.motd
+    owner: root
+    group: ngircd
+    mode: 0660
+  notify: restart ngircd
+  when:
+    - ngircd_global_motdfile is defined
+    - ngircd_yum|success
+
+- name: nsure that ngircd is started and enabled on boot
+  tags: ngircd
+  become: true
+  service:
+    enabled: yes
+    name: ngircd
+    state: started
+  when:
+    - ngircd_template|success
+    - ngircd_yum|success
 ...
