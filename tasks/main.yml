@@ -8,7 +8,7 @@
     state: present
   register: ngircd_yum
 
-- name: Applying ngircd configuration
+- name: Attempting to overlay ngircd configuration
   tags: ngircd
   become: true
   template:
@@ -36,7 +36,7 @@
     - ngircd_global_motdfile is defined
     - ngircd_yum|success
 
-- name: nsure that ngircd is started and enabled on boot
+- name: Ensure that ngircd is started and enabled on boot
   tags: ngircd
   become: true
   service:
