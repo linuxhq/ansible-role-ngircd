@@ -6,7 +6,7 @@ AdminInfo2 = {{ ngircd_global_admininfo2 }}
 AdminEMail = {{ ngircd_global_adminemail }}
 HelpFile = {{ ngircd_global_helpfile }}
 Info = {{ ngircd_global_info }}
-Listen = {{ ngircd_global_listen if ngircd_global_listen is string else ngircd_global_listen|join(',') }}
+Listen = {{ ngircd_global_listen if ngircd_global_listen is string else ngircd_global_listen|join(', ') }}
 {% if ngircd_global_motdfile is defined %}
 MotdFile = /etc/ngircd.motd
 {% endif %}
@@ -20,7 +20,7 @@ Password = {{ ngircd_global_password }}
 {% endif %}
 PidFile = {{ ngircd_global_pidfile }}
 {% if ngircd_global_ports is defined %}
-Ports = {{ ngircd_global_ports|join(', ') if ngircd_global_ports is iterable else ngircd_global_ports }}
+Ports = {{ ngircd_global_ports if ngircd_global_ports is string else ngircd_global_ports|join(', ') }}
 {% endif %}
 ServerGID = {{ ngircd_global_servergid }}
 ServerUID = {{ ngircd_global_serveruid }}
@@ -94,7 +94,7 @@ KeyFile = {{ ngircd_ssl_keyfile }}
 KeyFilePassword = {{ ngircd_ssl_keyfilepassword }}
 {%   endif %}
 {%   if ngircd_ssl_ports is defined %}
-Ports = {{ ngircd_ssl_ports|join(', ') if ngircd_ssl_ports is iterable else ngircd_ssl_ports }}
+Ports = {{ ngircd_ssl_ports if ngircd_ssl_ports is string else ngircd_ssl_ports|join(', ') }}
 {%   endif %}
 {% endif %}
 

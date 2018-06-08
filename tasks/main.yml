@@ -8,7 +8,7 @@
     state: present
   register: ngircd_yum
 
-- name: Attempting to overlay ngircd configuration
+- name: Attempting to overlay ngircd configurations
   tags: ngircd
   become: true
   template:
@@ -19,10 +19,9 @@
     mode: 0660
   notify: restart ngircd
   register: ngircd_template
-  when:
-    - ngircd_yum|success
+  when: ngircd_yum is success
 
-- name: Creating message of the day, if applicable.
+- name: Attempting to overlay message of the day, if applicable
   tags: ngircd
   become: true
   template:
@@ -34,7 +33,7 @@
   notify: restart ngircd
   when:
     - ngircd_global_motdfile is defined
-    - ngircd_yum|success
+    - ngircd_yum is success
 
 - name: Ensure that ngircd is started and enabled on boot
   tags: ngircd
@@ -44,6 +43,6 @@
     name: ngircd
     state: started
   when:
-    - ngircd_template|success
-    - ngircd_yum|success
+    - ngircd_template is success
+    - ngircd_yum is success
 ...
