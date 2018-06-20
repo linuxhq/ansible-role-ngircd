@@ -35,6 +35,32 @@
     - ngircd_global_motdfile is defined
     - ngircd_yum is success
 
+- name: Creating ngircd systemd override directory, if applicable
+  tags: ngircd
+  become: true
+  file:
+    path: /etc/systemd/system/ngircd.service.d
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  register: ngircd_systemd_file
+  when: ngircd_systemd|length > 0
+
+- name: Attempting to overlay ngircd systemd override, if applicable
+  tags: ngircd
+  become: true
+  template:
+    src: override.conf.j2
+    dest: /etc/systemd/system/ngircd.service.d/override.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload systemd
+  when:
+    - ngircd_systemd|length > 0
+    - ngircd_systemd_file is success
+
 - name: Ensure that ngircd is started and enabled on boot
   tags: ngircd
   become: true

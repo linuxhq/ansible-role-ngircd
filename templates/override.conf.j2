@@ -1,0 +1,23 @@
+{% for section in ngircd_systemd|sort %}
+[{{ section|capitalize }}]
+{%   for key, value in ngircd_systemd[section].iteritems()|sort %}
+{%     if value is sameas true %}
+{{ key }}=true
+{%     elif value is sameas false %}
+{{ key }}=false
+{%     elif value is string %}
+{{ key }}={{ value|string }}
+{%     elif value is number %}
+{{ key }}={{ value|int }}
+{%     elif value is iterable %}
+{%       for v in value %}
+{{ key }}={{ v }}
+{%       endfor %}
+{%     else %}
+{{ key }}={{ value }}
+{%     endif %}
+{%   endfor %}
+{%   if not loop.last %}
+
+{%   endif %}
+{% endfor %}

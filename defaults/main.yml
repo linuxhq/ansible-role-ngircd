@@ -40,4 +40,5 @@ ngircd_options_scrubctcp: false
 ngircd_options_syslogfacility: local5
 ngircd_servers: []
 ngircd_ssl: false
+ngircd_systemd: {}
 ...

@@ -57,6 +57,7 @@ Available variables are listed below, along with default values:
     ngircd_options_syslogfacility: local5
     ngircd_servers: {}
     ngircd_ssl: false
+    ngircd_systemd: {}
 
 Additional configruation variables not defined by default:
 
