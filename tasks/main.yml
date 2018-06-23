@@ -17,7 +17,7 @@
     owner: root
     group: ngircd
     mode: 0660
-  notify: restart ngircd
+  notify: reload ngircd
   register: ngircd_template
   when: ngircd_yum is success
 
@@ -30,7 +30,7 @@
     owner: root
     group: ngircd
     mode: 0660
-  notify: restart ngircd
+  notify: reload ngircd
   when:
     - ngircd_global_motdfile is defined
     - ngircd_yum is success

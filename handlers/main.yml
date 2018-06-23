@@ -1,14 +1,14 @@
 ---
+- name: reload ngircd
+  tags: ngircd
+  become: true
+  service:
+    name: ngircd
+    state: reloaded
+
 - name: reload systemd
   tags: ngircd
   become: true
   systemd:
     daemon_reload: yes
-
-- name: restart ngircd
-  tags: ngircd
-  become: true
-  service:
-    name: ngircd
-    state: restarted
 ...
