@@ -1,6 +1,7 @@
 ---
 dependencies: []
 galaxy_info:
+  role_name: ngircd
   author: tkimball83
   description: RHEL/CentOS - Next Generation IRC Daemon
   license: GPLv3
